@@ -1,0 +1,21 @@
+RR_01 Background and storyline (Alice and Bob)
+RR_02 Introduction to infrared light 
+RR_03 Arduino IDE, serial communication, and python
+
+RR_11 Infrared sender circuit
+RR_12 Infrared receiver circuit
+RR_13 Bit, byte, and data representation
+RR_14 ASCII encoding
+RR_15 NEC-string encoding protocol
+
+RR_21 Description of A1_send_test.ino
+RR_22 Description of B1_recv_test.ino
+RR_23 Description of the ASCII conversion program ascii_conv.py
+RR_24 Description of A2_send_binary.ino 
+RR_25 Description of B2_recv_binary.ino 
+RR_26 Description of A2_send_message.ino and A2_send_message.py
+RR_27 Description of B2_recv_message.ino and B2_recv_message.py
+
+RR_51 Background and storyline (Charlie and Eve)
+
+M1 - String of super secret characters

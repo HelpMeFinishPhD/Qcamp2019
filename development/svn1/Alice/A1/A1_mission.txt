@@ -1,0 +1,13 @@
+Mission 1: Build IR sender circuit
+
+In this mission, we need to build the circuit so that we can establish communication with the server. 
+
+Recommended reading:
+1. Introduction to infrared light (RR_02)
+2. Infrared sender circuit (RR_11)
+3. Arduino IDE, serial communication, and python (RR_03)
+4. Description of A1_send_test.ino (RR_21)
+
+Objectives: 
+1. Build a working setup, which can be tested with a phone camera.
+2. Implement a program that sends a blinking signal to server (to be completed with team B)

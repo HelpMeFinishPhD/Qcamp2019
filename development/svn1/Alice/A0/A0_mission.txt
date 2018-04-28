@@ -1,0 +1,11 @@
+Mission 0: Introduction 
+
+Congratulations! You have successfully created a company dedicated to sending customer data to the server. Now, before we move on, you first need to do some introductory thingy nonsense.
+
+Recommended reading:
+1. Background and storyline (RR_01)
+
+Objectives: 
+1. Choose a team captain (CEO)
+2. Write down a short company manifesto
+3. Take a photo of the team

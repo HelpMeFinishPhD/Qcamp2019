@@ -1,0 +1,13 @@
+Mission 1: Build IR receiver circuit
+
+In this mission, we need to build the circuit so that we can establish communication with the server. 
+
+Recommended reading:
+1. Introduction to infrared light (RR_02)
+2. Infrared receiver circuit (RR_12)
+3. Arduino IDE, serial communication, and python (RR_03)
+4. Description of B1_recv_test.ino (RR_22)
+
+Objectives: 
+1. Build a working setup, which can then be tested with a remote control
+2. Implement a program that receives blinking signal from user (to be completed with team A)

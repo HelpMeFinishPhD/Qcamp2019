@@ -1,0 +1,12 @@
+Mission 2: Sends "Hello Qcamp!" to the server
+
+In this mission, we want to send the message "Hello Qcamp!" to the server. In order to do this, we implement the commonly used NEC IR protocol to send sequences of IR pulses. The message string is encoded in ASCII format, and sent with binary pulses. Each packet of NEC pulses represents each ASCII character.
+
+Recommended reading:
+1. Bit, byte, and data representation (RR_13)
+2. ASCII encoding (RR_14)
+3. Description of the ASCII conversion program ascii_conv.py (RR_23)
+4. Description of A2_send_binary.ino (RR_24)
+
+Objectives: 
+1. Sends the message STX + 'Hello Qcamp!' + ETX to the server successfully (to be completed with the B team)

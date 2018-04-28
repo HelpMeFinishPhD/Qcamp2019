@@ -1,0 +1,13 @@
+Mission 3: Sends the message (M1) to the server
+
+In this mission, we want to send the message (M1) to the server (a string of super secret characters). This is implemented in a NEC-string encoding protocol, and a convinient python wrapper is used to facilitate the string transfer process between Alice and Bob.
+
+Recommended reading:
+1. NEC-string encoding protocol (RR_15)
+2. Description of A3_send_message.ino and A3_send_message.py (RR_26)
+
+(Given inside the envelope) String of super secret characters
+
+Objectives: 
+1. Establish a classical communication channel from Alice to Bob
+2. Send the super secret strings M1
