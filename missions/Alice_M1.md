@@ -30,7 +30,7 @@ Point allocation scheme:
 
 Objective: Construct a circuit capable of sending IR signals to Bob (while at the same time Bob needs to construct another circuit capable of receiving the IR signals). The objective is accomplished when Alice successfully sends (and Bob successfully receives) the blinking signal.
 
-Hint: You will need to refer to the technical documents.
+Hint: You will need to refer to the technical documents. **It is very important to read all the safety precautions in the documents, as there is a chance that you might burn some electrical components, or even the arduino board. Please be careful!**
 
 Point allocation scheme:
 * [Full] points upon correct, efficient, and stable implementation of the circuit, or
@@ -64,8 +64,27 @@ Point allocation scheme:
 
 > *- Dave Barry*
 
-Objective: x
-Hint: x
+Objectives:
+1. Successfully communicate a message to Bob via the IR link by using the program XXX111,
+1. Help Bob to construct the IR sender circuit, and
+1. Chat with Bob (i.e. send a few messages back and forth) by using the program XXX111.
 
 Point allocation scheme:
-* x
+* [Full] points by completing all the objectives **within 75 minutes** from the start of Mission 1 (leaving 15 more minutes to wrap up other missions), or if fails,
+* [80%] of total points by completing all the objectives within the time limit, or if fails,
+* Maximum of [80%] of total points, proportional to the effort and the number of completed tasks at the end of the time limit.
+
+### *Performed __after__ the conclusion of Mission 1:*
+### [10 points] [Secret Mission] A super secret message
+> *After Mission 1, a secretive agent approaches your company, and she is interested in sending some super secret messages to her accomplice which lives close to Bob. She is very certain that the IR channel is quite secure, but is it?*
+
+There will be a few messages that you need to send to Bob within 10 minutes after the conclusion of Mission 1. They will come in secrets envelope from game master. You have to ensure the security of the content, and that it is properly disposed of after being sent to Bob.
+
+Objective: Alice successfully sends all the messages to Bob.
+
+Note: You must not communicate with Bob (no talking or signalling), except by using the chatting software developed in Mission 1.
+
+Point allocation scheme:
+* [Full] points if all the messages is sent by Alice and received successfully by Bob, or
+* A fraction of [full] points, proportional to the number of messages sent and received successfully.
+* Some points will be forfeited if Alice communicate with Bob, except by using the chatting software.
