@@ -1,53 +1,25 @@
 /*
-  Second attempt to write the program for the stepper motor.
+  First attempt to recapitulate all the features in infrared comm (Mission 1).
   Implemented features:
-  1. Everything in the first attempt (discarding ONEREV)
-  2. Set polarisation angle: H(0,180)->0, D(45,225)->1, V(90,270)->2, A(135,315)->3  
-  3. Set offset in the polarisation angle
-  4. Perform a defined polarisation set from serial input
+  1. Send Blinking feature
+  2. Recv Blinking feature
+  3. Sending a short message (4 bytes)
+  4. Recving a short message (4 bytes)
  Author: Adrian Utama (2018) 
 */
 
-#include <EEPROM.h>
-#include "EEPROMAnything.h"
-#include <Stepper.h>
+#include <IRremote.h>
 
 // Parameters
-const int stepDelay = 2; // 2 ms
-const int stepSpeed = 1000; // 1000 rpm: any number high enough would do
-const int stepsPerRevolution = 2048; 
-
-const int serialTimeout = 100; // 100 ms
-
-const int EEloc_angleCurrent = 0; // Takes 2 bytes
-const int EEloc_angleTarget = 2;  // Takes 2 bytes
-
-int polOffset = 0; // Polarisation offset, retrieve and store in EEProm
-const int EEloc_polOffset = 4;  // Takes 2 bytes
-
-const int seqLength = 64; // Polarisation sequence length 
-int polSeq[seqLength] = {0}; // int datatype, in multiples of 45 degrees.
-
-const int seqTimeStep = 1500; // 1000 ms
-const int seqInitTarget = 1;  // Set initial polarition for seq (D)
-const int pinLsr = 13;
-const int seqLsrStart = 1200; 
-const int seqLsrStop = 1400;
+const int serial_timeout = 100; // 100 ms 
     
-// initialize the stepper library on pins 8 through 11:
-// need to swap pins 10 and 9 (due to wiring reason)
-Stepper myStepper(stepsPerRevolution,8,10,9,11);            
+// initialize the IR library
+IRsend irsend;         
 
 void setup() {
-  // set the speed at 60 rpm: 
-  myStepper.setSpeed(stepSpeed);
   // initialize the serial port:
   Serial.begin(9600);
   Serial.setTimeout(serialTimeout);
-  // Obtain the polarisation offset from EEProm
-  EEPROM_readAnything(EEloc_polOffset, polOffset);
-  // Set the laser pin to be output
-  pinMode(pinLsr, OUTPUT);
 }
 
 void loop() {
@@ -56,28 +28,24 @@ void loop() {
   Serial.readBytesUntil(' ', serbuf, 8); // Until whitespace
   // Obtain which input command (enumerated)
   int enumc = -1; // default choice
-  int maxChoice = 7;
-  char sercmd[maxChoice][8] = {"HELP", "RESET", "SETANG", "SETPOL", "POLOFF", "POLSEQ", "STSEQ",};
+  int maxChoice = 5;
+  char sercmd[maxChoice][8] = {"HELP", "SBLINK", "CBLINK", "SEND", "RECV"};
   for (int c=0; c<maxChoice; c++){
     if (strcasecmp(sercmd[c],serbuf) == 0){ 
       enumc = c;// Obtain match
     }
   }
   // Declaring some other parameters
-  char valbuf[8] = "";      // Buffer to receive chartype value from serial
-  char polseqbuf[seqLength] = ""; // Buffer to receive chartype pol sequences from serial 
-  int angleTarget;
+  //-- none --
+  
   // Switching between different cases
   switch(enumc){
     case 0: //HELP
-      Serial.print("Stepper Motor Implementation Level 2\n");
+      Serial.print("Stepper Motor Implementation Level 1\n");
       Serial.print("HELP       Print help statement\n");
-      Serial.print("RESET      Reset angle to 0 degrees\n");
+      Serial.print("ONEREV     Perform one revolution\n");
       Serial.print("SETANG X   Set angle to be X degrees\n");
-      Serial.print("SETPOL X   Set polarisation to be H(0), D(1), V(2), or A(3)\n");
-      Serial.print("POLOFF     Set the angle offset for H polarisation\n");
-      Serial.print("POLSEQ X   Set the polarisation sequence as X (length of seqLength)\n");
-      Serial.print("STSEQ      Start the polarisation sequence\n");
+      Serial.print("RESET      Reset angle to zero degrees\n");
       break; 
     case 1: //RESET
       Serial.print("RESET\n");

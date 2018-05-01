@@ -1,10 +1,9 @@
 /*
-  Second attempt to write the program for the stepper motor.
+  Third attempt to write the program for the stepper motor.
   Implemented features:
-  1. Everything in the first attempt (discarding ONEREV)
-  2. Set polarisation angle: H(0,180)->0, D(45,225)->1, V(90,270)->2, A(135,315)->3  
-  3. Set offset in the polarisation angle
-  4. Perform a defined polarisation set from serial input
+  1. Everything in the second attempt 
+  2. Modify poloff to move to the desired location after setting it
+  3. Read out the analog value of A0, and convert it to voltage
  Author: Adrian Utama (2018) 
 */
 
@@ -30,7 +29,7 @@ int polSeq[seqLength] = {0}; // int datatype, in multiples of 45 degrees.
 
 const int seqTimeStep = 1500; // 1000 ms
 const int seqInitTarget = 1;  // Set initial polarition for seq (D)
-const int pinLsr = 13;
+const int pinLsr = 13;        // Laser pin
 const int seqLsrStart = 1200; 
 const int seqLsrStop = 1400;
     
@@ -56,8 +55,8 @@ void loop() {
   Serial.readBytesUntil(' ', serbuf, 8); // Until whitespace
   // Obtain which input command (enumerated)
   int enumc = -1; // default choice
-  int maxChoice = 7;
-  char sercmd[maxChoice][8] = {"HELP", "RESET", "SETANG", "SETPOL", "POLOFF", "POLSEQ", "STSEQ",};
+  int maxChoice = 8;
+  char sercmd[maxChoice][8] = {"HELP", "RESET", "SETANG", "SETPOL", "POLOFF", "POLSEQ", "STSEQ", "READIT"};
   for (int c=0; c<maxChoice; c++){
     if (strcasecmp(sercmd[c],serbuf) == 0){ 
       enumc = c;// Obtain match
@@ -67,17 +66,20 @@ void loop() {
   char valbuf[8] = "";      // Buffer to receive chartype value from serial
   char polseqbuf[seqLength] = ""; // Buffer to receive chartype pol sequences from serial 
   int angleTarget;
+  int sensorValue;
+  float sensorVoltage;
   // Switching between different cases
   switch(enumc){
     case 0: //HELP
-      Serial.print("Stepper Motor Implementation Level 2\n");
+      Serial.print("Stepper Motor Implementation Level 3\n");
       Serial.print("HELP       Print help statement\n");
       Serial.print("RESET      Reset angle to 0 degrees\n");
       Serial.print("SETANG X   Set angle to be X degrees\n");
       Serial.print("SETPOL X   Set polarisation to be H(0), D(1), V(2), or A(3)\n");
-      Serial.print("POLOFF     Set the angle offset for H polarisation\n");
+      Serial.print("POLOFF     Set the angle offset for H polarisation, and move there\n");
       Serial.print("POLSEQ X   Set the polarisation sequence as X (length of seqLength)\n");
       Serial.print("STSEQ      Start the polarisation sequence\n");
+      Serial.print("READIT     Read the intensity value of A0\n");
       break; 
     case 1: //RESET
       Serial.print("RESET\n");
@@ -113,6 +115,9 @@ void loop() {
       EEPROM_writeAnything(EEloc_polOffset, polOffset);
       Serial.print("Polarisation offset: ");
       Serial.println(polOffset);
+      // Move to this offset value
+      angleTarget = polOffset;
+      EEPROM_writeAnything(EEloc_angleTarget, angleTarget);
       break;
     case 5: //POLSEQ
       while (!Serial.available());
@@ -151,6 +156,11 @@ void loop() {
       EEPROM_writeAnything(EEloc_angleTarget, angleTarget);
       moveStepper();
       break;    
+    case 7: //READIT
+      sensorValue = analogRead(A0);
+      sensorVoltage = sensorValue * (5.0 / 1023.0);
+      Serial.println(sensorVoltage,3);
+      break;
     default:
       Serial.print("Unknown command\n");
       break;
@@ -227,7 +237,7 @@ int laserOn(unsigned long timeStep){
   // Wait until the start trigger
   while(timeNow<timeStep+seqLsrStart){
     timeNow = millis();};
-  Serial.println(timeNow-timeStep);
+  // Serial.println(timeNow-timeStep);
   digitalWrite(pinLsr, HIGH);
   // Wait until the stop trigger
   while(timeNow<timeStep+seqLsrStop){
