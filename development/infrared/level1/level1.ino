@@ -14,12 +14,13 @@
 const int serial_timeout = 100; // 100 ms 
 const int send_pin = 3;  // The library sets it to 3 (fixed).
 const int recv_pin = 11; // Pin 11
+unsigned int carrier_freq = 38;
 
 // More useless parameters
 int blink_time = 200;     // 200 ms
 int blink_num = 20;       // 20 blinks
-int blink_obtime = 10000; // 10 seconds
-int blink_rstime = 300;   // 300 ms timeout 
+int blink_obtime = 30000; // 10 seconds
+int blink_rstime = 200;   // 200 ms timeout 
     
 // initialize the IR library
 IRsend irsend;         
@@ -65,10 +66,13 @@ void loop() {
     case 1: //SBLINK
       // Serial.print("Perform some blinking features \n");
       for (int i=0; i<blink_num; i++){
-        digitalWrite(send_pin, HIGH);
+        irsend.enableIROut(carrier_freq);
+        // bright
+        TIMER_ENABLE_PWM;
         delay(blink_time);
-        digitalWrite(send_pin, LOW);
-        delay(blink_time);        
+        // dark
+        TIMER_DISABLE_PWM;
+        delay(blink_time);    
       }
       Serial.println("Task done.");
       break;
@@ -81,9 +85,10 @@ void loop() {
         readout = digitalRead(recv_pin);
         if (!readout){    
           // Detected an IR light blinking
-          Serial.print("BLINK!");
+          Serial.println("BLINK!");
           delay(blink_rstime);
         } 
+        timeNow = millis();
       }
       Serial.println("Task done.");
       break;

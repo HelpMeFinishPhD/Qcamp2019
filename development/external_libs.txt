@@ -1,1 +1,4 @@
+The repo can be dowloaded from:
 https://github.com/z3t0/Arduino-IRremote
+
+You can import the library from the arduino program. You might need to rename the folder (to remove the hyphen)
