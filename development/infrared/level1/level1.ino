@@ -19,7 +19,7 @@ unsigned int carrier_freq = 38;
 // More useless parameters
 int blink_time = 200;     // 200 ms
 int blink_num = 20;       // 20 blinks
-int blink_obtime = 30000; // 10 seconds
+int blink_obtime = 10000; // 10 seconds
 int blink_rstime = 200;   // 200 ms timeout 
     
 // initialize the IR library
@@ -52,6 +52,8 @@ void loop() {
   unsigned long timeNow;
   unsigned long timeEnd;
   int readout;
+  char strbuf[4] = "";
+  unsigned long value;
   
   // Switching between different cases
   switch(enumc){
@@ -93,9 +95,23 @@ void loop() {
       Serial.println("Task done.");
       break;
     case 3: //SEND X
-      Serial.print("Trying to send a word \n");
-    case 4: //POLOFF
-      Serial.print("Trying to recv a word \n");
+      // Serial.print("Trying to send a word \n");
+      while(!Serial.available()); // Wait for X
+      Serial.readBytes(strbuf, 4); // Read 4 characters each time
+      value = (unsigned long) strbuf[0] << 24 
+              | (unsigned long) strbuf[1] << 16
+              | (unsigned long) strbuf[2] << 8
+              | (unsigned long) strbuf[3];
+      Serial.print(value, HEX);  // Debug                   
+      irsend.sendNEC(value, 32);   // Send the characters
+      break;
+    case 4: //RECV
+      // Serial.print("Trying to recv a word \n");
+      if (irrecv.decode(&results)) {
+        Serial.print(results.value, HEX); // Print HEX characters
+        irrecv.resume();   // Receive the next value
+      }
+      break;
     default:
       Serial.print("Unknown command\n");
       break;
