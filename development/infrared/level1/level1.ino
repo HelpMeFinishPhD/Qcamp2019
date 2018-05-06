@@ -32,8 +32,6 @@ void setup() {
   // initialize the serial port:
   Serial.begin(9600);
   Serial.setTimeout(serial_timeout);
-  // Set the recv_pin to INPUT
-  irrecv.enableIRIn();
 }
 
 void loop() {
@@ -109,6 +107,8 @@ void loop() {
       irsend.sendNEC(value, 32);   // Send the characters
       break;
     case 4: //RECV
+      // Set the recv_pin to INPUT
+      irrecv.enableIRIn();
       //Serial.print("Trying to recv a word \n");
       while (true){
         // Decode result 
@@ -123,7 +123,7 @@ void loop() {
           readout = Serial.read();
           // Escape character is # (int value 35)
           if (readout == 35){ 
-            Serial.println("Listening interrupted!");
+            Serial.println("ListeningS interrupted!");
             break;
           }
         }
