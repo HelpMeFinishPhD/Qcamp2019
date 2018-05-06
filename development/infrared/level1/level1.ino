@@ -14,7 +14,8 @@
 const int serial_timeout = 100; // 100 ms 
 const int send_pin = 3;  // The library sets it to 3 (fixed).
 const int recv_pin = 11; // Pin 11
-unsigned int carrier_freq = 38;
+unsigned int carrier_freq = 38; // 38 kHz
+const int irrecv_timeout = 100; // 100 ms 
 
 // More useless parameters
 int blink_time = 200;     // 200 ms
@@ -31,6 +32,8 @@ void setup() {
   // initialize the serial port:
   Serial.begin(9600);
   Serial.setTimeout(serial_timeout);
+  // Set the recv_pin to INPUT
+  irrecv.enableIRIn();
 }
 
 void loop() {
@@ -106,10 +109,14 @@ void loop() {
       irsend.sendNEC(value, 32);   // Send the characters
       break;
     case 4: //RECV
-      // Serial.print("Trying to recv a word \n");
-      if (irrecv.decode(&results)) {
-        Serial.print(results.value, HEX); // Print HEX characters
-        irrecv.resume();   // Receive the next value
+      //Serial.print("Trying to recv a word \n");
+      while (true){
+        if (irrecv.decode(&results)) {
+          Serial.print(results.value, HEX); // Print HEX characters
+          irrecv.resume();   // Receive the next value
+          break;
+        }
+        delay(irrecv_timeout);
       }
       break;
     default:

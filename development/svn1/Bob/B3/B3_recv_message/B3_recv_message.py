@@ -11,7 +11,7 @@ import sys
 import time
 
 # Parameter declaration
-serial_addr = '/dev/ttyACM1'
+serial_addr = '/dev/ttyACM0'
 
 # Other parameters declarations
 baudrate = 9600      # Default in Arduino
