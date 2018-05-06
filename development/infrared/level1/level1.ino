@@ -123,7 +123,7 @@ void loop() {
           readout = Serial.read();
           // Escape character is # (int value 35)
           if (readout == 35){ 
-            Serial.println("ListeningS interrupted!");
+            Serial.println("Listening interrupted!");
             break;
           }
         }
