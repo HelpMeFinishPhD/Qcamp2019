@@ -111,10 +111,21 @@ void loop() {
     case 4: //RECV
       //Serial.print("Trying to recv a word \n");
       while (true){
+        // Decode result 
         if (irrecv.decode(&results)) {
           Serial.print(results.value, HEX); // Print HEX characters
           irrecv.resume();   // Receive the next value
           break;
+        }
+        // Cancel operation (if escape char received)
+        if (Serial.available()) {
+          // Read the incoming byte:
+          readout = Serial.read();
+          // Escape character is # (int value 35)
+          if (readout == 35){ 
+            Serial.println("Listening interrupted!");
+            break;
+          }
         }
         delay(irrecv_timeout);
       }
