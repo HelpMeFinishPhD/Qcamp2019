@@ -31,10 +31,11 @@ while True:
                      "Waiting for data ... \n"
         print(msg_string)
         state = 0 # 0 : waiting for STX, 1 : transmitting/ wait for ETX
+        receiver.write('RECV ') # Flag to recv
         while True:
-            receiver.write('RECV ') # Flag to recv
             if receiver.in_waiting:
                 hex_string = receiver.read(8)
+                receiver.write('RECV ') # Flag to recv
                 # Looking for start of text
                 if hex_string == '2020202':
                     print ("--- START OF TEXT ---")
@@ -57,5 +58,6 @@ while True:
                     except ValueError:
                         print("\n ERROR! UNABLE TO DECODE STRING!")
     except KeyboardInterrupt:
+        receiver.write('#') # Flag to force end listening
         print ("\nThank you for using the program!")
         sys.exit()  # Exits the program
