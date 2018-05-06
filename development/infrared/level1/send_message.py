@@ -32,18 +32,21 @@ while True:
                      "Write your message here: \n"
         tosend_string = raw_input(msg_string)
         # Iterate and send the string
+        sender.write('SEND ') # Flag to send
         sender.write(b'\x02\x02\x02\x02') # Start of text
         time.sleep(rep_wait_time)
         str_ptr = 0
         max_str = len(tosend_string)
         while True:
             str_packet = tosend_string[str_ptr:str_ptr+4]
+            sender.write('SEND ') # Flag to send
             sender.write(str_packet)
             sys.stdout.write("\r{0}    ".format("Sending: "+str_packet))
             sys.stdout.flush()
             str_ptr += 4
             time.sleep(rep_wait_time)
             if str_ptr >= max_str:
+                sender.write('SEND ') # Flag to send
                 sender.write(b'\x03\x03\x03\x03') # End of text
                 time.sleep(rep_wait_time)
                 sys.stdout.write("\r{0}\n".format("Sending done!"))

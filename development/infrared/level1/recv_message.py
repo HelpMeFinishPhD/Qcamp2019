@@ -32,6 +32,7 @@ while True:
         print(msg_string)
         state = 0 # 0 : waiting for STX, 1 : transmitting/ wait for ETX
         while True:
+            sender.write('RECV ') # Flag to recv
             if receiver.in_waiting:
                 hex_string = receiver.read(8)
                 # Looking for start of text
@@ -42,6 +43,7 @@ while True:
                     try:
                         # Looking for end of text
                         if hex_string == '3030303':
+                            sender.write('#') # Flag to end listening
                             print ("\n--- END OF TEXT ---")
                             break
                         # Check and modify the length of string to 8 HEX char
