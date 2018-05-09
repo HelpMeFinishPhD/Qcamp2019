@@ -18,7 +18,7 @@ serial_addr = content[0][:-1]
 
 # Other parameters declarations
 baudrate = 9600      # Default in Arduino
-rep_wait_time = 0.5  # Wait time between packets (in s).
+rep_wait_time = 0.3  # Wait time between packets (in s).
 timeout = 0.1        # Serial timeout (in s).
 
 # Opens the device side serial port
