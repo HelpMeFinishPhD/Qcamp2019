@@ -34,6 +34,7 @@ while True:
         while True:
             if receiver.in_waiting:
                 hex_string = receiver.read(8)
+
                 receiver.write('RECV ') # Flag to recv
                 # Translating the text:
                 try:
@@ -43,8 +44,6 @@ while True:
                     # Convert to ASCII string
                     hex_list= map(''.join, zip(*[iter(hex_string)]*2))
                     ascii_string = "".join([chr(int("0x"+each_hex,0)) for each_hex in hex_list])
-                    sys.stdout.write(ascii_string)
-                    sys.stdout.flush()
                     if ascii_string == text:
                         print "Received the text: ", text, ". Mission Successful"
                         print "To exit the program, use Ctrl+C\n"
