@@ -45,10 +45,10 @@ while True:
                     hex_list= map(''.join, zip(*[iter(hex_string)]*2))
                     ascii_string = "".join([chr(int("0x"+each_hex,0)) for each_hex in hex_list])
                     if ascii_string == text:
-                        print "Received the text: ", text, ". Mission Successful"
+                        print "Received the text: ", ascii_string, ". Mission Successful"
                         print "To exit the program, use Ctrl+C\n"
                     else:
-                        print "Receiving something that does not seem correct:", text
+                        print "Receiving something that does not seem correct:", ascii_string
                         print "To exit the program, use Ctrl+C\n"
                 except ValueError:
                     print("\n ERROR! UNABLE TO DECODE STRING!")
