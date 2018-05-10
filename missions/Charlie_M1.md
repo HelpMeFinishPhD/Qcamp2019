@@ -8,7 +8,7 @@ The company Alice and Bob have quite a reputation, and you want to figure out wh
 
 The mission is further divided into smaller parts, which consists of compulsory and optional parts. The compulsory parts are marked with either [Checkpoint], [Final Mission], or [Secret Mission] flags, while the unmarked missions are sort of optional. It is thus a priority to complete all the flagged missions before the optional missions, as one will not be able to revisit this missions after the deadline. The compulsory missions also form an important basis for upcomming missions. It is also advisable to divide the mission and mission between your teammates.
 
-### [10 points] BREAK the ice, BURN the fire, STOMP the ground, LIFT the air
+#### [10 points] BREAK the ice, STOMP the ground, LIFT the air
 > *This is sort of compulsory, but only to get the group going :P*
 
 Objectives:
@@ -19,7 +19,7 @@ Objectives:
 Point allocation scheme:
 * [Full] points upon completion of the objectives.
 
-### [30 points] [Checkpoint] Without the electronics, there is NONE
+#### [30 points] [Checkpoint] Without the electronics, there is NONE
 > *Resistor: I'm gonna ask you this one time, where is the circuit?*
 
 > *Transistor: Yeah, I'll do you one better, WHO is the circuit?*
@@ -32,13 +32,16 @@ Objective: Construct two circuits, one capable of sending IR signals, and one ca
 
 Hint: You will need to refer to the technical documents. **It is very important to read all the safety precautions in the documents, as there is a chance that you might burn some electrical components, or even the arduino board. Please be careful!**
 
-Note: Charlie-sender and Charlie-receiver needs to be perfomed on two separate arduino boards, although it is okay to use either one or two computers. With one computer, you need to use two different serial ports (and keep track which one is which). Due to budgetary constraint, the gamemaster only provides one computer, so if you want to implement this using two computers, you need to bring and use your own computer.
+Notes:
+
+1. Charlie-sender and Charlie-receiver needs to be perfomed on **two separate arduino boards**, although it is okay to use either one or two computers. Note that with one computer, the two arduino will show up as two different serial ports, so you will need to keep track which one is which.
+1. To not raise any suspicion on your identity as a spy to Alice and Bob, it is highly advisable to block your generated IR signals, i.e. don't let Alice and Bob detect IR signals other than theirs. This is particularly important since the IR light is pretty strong and can bounce off the walls of the room a few times, even though it is invisible to your eyes. The gamemaster will provide you with some optical-blocking boxes to cover up your experiments.
 
 Point allocation scheme:
 * [Full] points upon correct, efficient, and stable implementation of the circuits, or
 * [80%] of total points upon successful implementation of the circuits, but not necessarily correct, efficient, nor stable.
 
-### [10 points] Asymmetrical cryptography handout
+#### [10 points] Asymmetrical cryptography handout
 > *When cryptography is outlawed, bayl bhgynjf jvyy unir cevinpl.*
 
 > *-  John Perry Barlow*
@@ -48,7 +51,7 @@ Objective: Complete the "asymmetrical cryptography handout". No cheating or copy
 Point allocation scheme:
 * Based on the number of correct responses in the handout.
 
-### [20 points] [Final Mission] Let make them chat
+#### [20 points] [Final Mission] Let make them chat
 > *The Internet: transforming society and shaping the future through chat.*
 
 > *- Dave Barry*
