@@ -60,12 +60,12 @@ void loop() {
   // Switching between different cases
   switch(enumc){
     case 0: //HELP
-      Serial.print("Stepper Motor Implementation Level 1\n");
+      Serial.print("Classical Communication Implementation (Mission 1)\n");
       Serial.print("HELP       Print help statement\n");
       Serial.print("SBLINK     Send blinking feature\n");
       Serial.print("RBLINK     Recv blinking feature\n");
       Serial.print("SEND X     Send a short message X (4 bytes)\n");
-      Serial.print("RECV       Receive a short message\n");
+      Serial.print("RECV       Receive a short message (4 bytes)\n");
       break; 
     case 1: //SBLINK
       // Serial.print("Perform some blinking features \n");
