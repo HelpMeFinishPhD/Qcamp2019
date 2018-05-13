@@ -2,11 +2,11 @@
 ## Mission 1 : Establishing Classical Communication
 *70 minutes of gameplay [70/200 points]*
 
-As a security company which mainly focuses on spying on the technolgies of other companies, you obtain an intel from your informant that Alice and Bob is developing a new communication channel based on old TV remotes.
+As a security company which mainly focuses on spying on the technologies of other companies, you obtain an intel from your informant that Alice and Bob is developing a new communication channel based on old TV remotes.
 
 The company Alice and Bob have quite a reputation, and you want to figure out whether their technologies are reliable (or even secure). Thanks to his expertise, your informant manages to copy over the necessary tecnical documents. The aim of this mission is to understand what Alice and Bob are up to (by developing the same technology on your own), and then try to see whether there is a way to spy onto their channel.
 
-The mission is further divided into smaller parts, which consists of compulsory and optional parts. The compulsory parts are marked with either [Checkpoint], [Final Mission], or [Secret Mission] flags, while the unmarked missions are sort of optional. It is thus a priority to complete all the flagged missions before the optional missions, as one will not be able to revisit this missions after the deadline. The compulsory missions also form an important basis for upcomming missions. It is also advisable to divide the mission and mission between your teammates.
+This mission is divided into smaller tasks, which consists of compulsory and optional tasks. The compulsory tasks are marked with either [Checkpoint], [Final Task], or [Secret Task] flags, while the unmarked tasks are sort of optional. It is thus a priority to complete all the flagged tasks before the optional tasks, as one will not be able to revisit these tasks after the deadline. The compulsory tasks are very important for the upcoming missions. It is also highly advisable to split the tasks among your teammates.
 
 #### [10 points] BREAK the ice, STOMP the ground, LIFT the air
 > *This is sort of compulsory, but only to get the group going :P*
@@ -51,16 +51,16 @@ Objective: Complete the "asymmetrical cryptography handout". No cheating or copy
 Point allocation scheme:
 * Based on the number of correct responses in the handout.
 
-#### [20 points] [Final Mission] Let make them chat
+#### [20 points] [Final Task] Let make them chat
 > *The Internet: transforming society and shaping the future through chat.*
 
 > *- Dave Barry*
 
 Objectives:
-1. Successfully communicate a message from Charlie-sender to Charlie-receiver via the IR link by using the program XXX111 and XXX111,
-1. Chatting (i.e. send a few messages back and forth) by using the program XXX111 and XXX111.
+1. Successfully communicate a message from Charlie-sender to Charlie-receiver via the IR link by using the program chatting.py,
+1. Chatting (i.e. send a few messages back and forth) by using the program chatting.py.
 
 Point allocation scheme:
-* [Full] points by completing all the objectives **within 60 minutes** from the start of Mission 1 (leaving 10 more minutes to wrap up other missions), or if fails,
+* [Full] points by completing all the objectives **within 60 minutes** from the start of Mission 1 (leaving 10 more minutes to wrap up other tasks), or if fails,
 * [80%] of total points by completing all the objectives within the time limit, or if fails,
 * Maximum of [80%] of total points, proportional to the effort and the number of completed tasks at the end of the time limit.

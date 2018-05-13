@@ -50,7 +50,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         self.buttonStart.clicked.connect(self.buttonStart_clicked)
 
         # Gets a list of avaliable serial ports to connect to and adds to combo box
-        self.ports = glob.glob('/dev/ttyACM*')
+        self.ports = glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
         self.deviceBox.addItems(self.ports)
 
         # Initialise plots

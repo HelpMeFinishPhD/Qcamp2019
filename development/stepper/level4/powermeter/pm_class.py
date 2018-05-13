@@ -22,7 +22,7 @@ class AnalogPinComm(object):
         self.serial.close()
 
     def get_voltage(self):
-        self.serial.write('READIT ')
+        self.serial.write('VOLT? ')
         voltage = self.serial.readline()[:-2] # Remove /n
         return voltage
 

@@ -9,10 +9,11 @@
 #include <Stepper.h>
 
 // Important parameters
-const int seqLength = 16; // Polarisation sequence length (16 bit)
-const int pinLsr = 4;     // Laser pin
-const int pinDeb = 13;    // Debugging pin (LED on the board)
-const int sensorLoc = 0;  // A0
+const int seqLength = 16;  // Polarisation sequence length (16 bit)
+const int pinLsr = 4;      // Laser pin
+const int pinDeb = 13;     // Debugging pin (LED on the board)
+const int sensorLoc = 0;   // A0
+const int catchTh = 400;   // Threshold in CATCH command ~2V.
 
 // Parameters
 const int stepDelay = 2; // 2 ms
@@ -33,6 +34,8 @@ const int seqStepTime = 1500;  // Time between each steps. Def: 1500 ms
 const int seqInitTarget = 1;   // Set initialization polarisation for seq always (D)
 const int seqPinStart = 1200;  // Time in sequence to start / ON the pin
 const int seqPinStop = 1400;   // Time in sequence to start / ON the pin
+const int seqSyncBlink = 200;  // 200 ms (to initialise the signal)
+const int seqReadTime = 1300;  // 1300 ms (hopefully in the middle of the laser pulse)
     
 // initialize the stepper library on pins 8 through 11:
 // need to swap pins 10 and 9 (due to wiring reason)
@@ -58,11 +61,11 @@ void loop() {
   // Obtain which input command (enumerated)
   int enumc = -1; // default choice
   int maxChoice = 18;
-  char sercmd[maxChoice][8] = {"HELP",            // 0
-    "SETANG", "ANG?", "SETPOL", "POL?", "SETHOF", // 5
-    "HOF?", "POLSEQ", "RNDSEQ", "RNDBAS", "SEQ?", // 10
-    "LASON", "LASOFF", "VOLT?", "INT!", "RUNSEQ", // 15
-    "TXSEQ", "RXSEQ"};                            // 17
+  char sercmd[maxChoice][8] = {"HELP",             // 0
+    "SETANG", "ANG?", "SETPOL", "POL?", "SETHOF",  // 5
+    "HOF?", "POLSEQ", "RNDSEQ", "RNDBAS", "SEQ?",  // 10
+    "LASON", "LASOFF", "VOLT?", "CATCH", "RUNSEQ", // 15
+    "TXSEQ", "RXSEQ"};                             // 17
   for (int c=0; c<maxChoice; c++){
     if (strcasecmp(sercmd[c],serbuf) == 0){ 
       enumc = c;// Obtain match
@@ -77,7 +80,7 @@ void loop() {
   char polseqbuf[seqLength] = ""; // Buffer to receive chartype pol sequences from serial 
   int polSeqMod[seqLength] = {0}; // Polarisation sequence within the range (0,3).       
   int sensorValue;
-  float sensorVoltage;  
+  float sensorVoltage; 
   
   // Switching between different cases
   switch(enumc){
@@ -98,7 +101,7 @@ void loop() {
       Serial.print("LASON      Turn on laser\n");
       Serial.print("LASOFF     Turn off laser\n");
       Serial.print("VOLT?      Ask for sensor voltage\n");
-      Serial.print("INT!       Wait for interrupt and display time\n");
+      Serial.print("CATCH      Wait for laser light and display time\n");
       Serial.print("RUNSEQ     Run the sequence (generic)\n");
       Serial.print("TXSEQ      Run the sequence (as a sender)\n");
       Serial.print("RXSEQ      Run the sequence (as a receiver)\n");      
@@ -182,10 +185,7 @@ void loop() {
       break;
       
     case 10: //SEQ?
-      // Print the stored sequence (values only from 0 to 3)
-      for (int i=0; i<seqLength; i++){
-         Serial.print( specialMod(polSeq[i], 4) );  // mod 4
-      } Serial.print('\n');    
+      printSeq();
       break;
       
     case 11: //LASON
@@ -204,8 +204,9 @@ void loop() {
       Serial.println(sensorVoltage,3);
       break;
       
-    case 14: //INT!
-      Serial.println("INT! coming soon");      
+    case 14: //CATCH
+      Serial.print(lasCatch()); 
+      Serial.println(" ms is when the light triggers.");
       break;
       
     case 15: //RUNSEQ
@@ -215,12 +216,12 @@ void loop() {
       
     case 16: //TXSEQ
       runSequence(1);  // mode 1 (for TX)
-      Serial.println("more coming soon");
+      Serial.println("OK");
       break;
       
     case 17: //RXSEQ
       runSequence(2);  // mode 2 (for RX)
-      Serial.println("more coming soon");  
+      // In mode 2, it will print the sensor values
       break;
 
     default:
@@ -242,6 +243,24 @@ int specialMod(int num, int mod){
     result += mod;
   }
   return result;
+}
+
+int printSeq(){
+  // Print the stored sequence (values only from 0 to 3)
+  for (int i=0; i<seqLength; i++){
+    Serial.print(specialMod(polSeq[i], 4) );  // mod 4
+  } 
+  Serial.print('\n'); // endline
+  
+  return 1; // Exits 
+}
+
+unsigned long lasCatch(){
+  int sensorValue = 0;
+  while (sensorValue < catchTh){
+    sensorValue = analogRead(sensorLoc);
+  }
+  return millis();
 }
 
 int specialRandom(int array[], int arrayLength, int maxVal){
@@ -322,6 +341,8 @@ int runSequence(int mode){
   int angleTarget;
   unsigned long timeNow = 0;
   unsigned long timeStep = 0;
+  // Only for mode 2
+  int sensorArrVal[seqLength] = {0};
   
   // Get ready : polarisation initialiastion (def: D)
   EEPROM_readAnything(EEloc_polOffset, polOffset);   // Update the polarisation offset
@@ -330,11 +351,20 @@ int runSequence(int mode){
   moveStepper();
   
   if (mode == 1){
-    Serial.println("Developing TX");
-    timeStep = millis();
+    timeStep = millis() + seqSyncBlink; // Get the next time step
+    // ON part of the sync pulse 
+    digitalWrite(pinLsr, HIGH);         
+    // Block the signal until the next time step
+    while(timeNow<timeStep){
+      timeNow = millis();     // Keep checking the time
+    }
+    // OFF part of the sync pulse 
+    digitalWrite(pinLsr, LOW);         
+    timeStep += seqSyncBlink; // Set the main sequence trigger
   } else if (mode == 2) {
-    Serial.println("Developing RX");    
-    timeStep = millis();
+    // Serial.println("Listen for sync pulse."); // debug
+    timeStep = lasCatch();    // Caught the sync signal
+    timeStep+= 2 * seqSyncBlink;
   } else{
     // Main sequence starts now
     timeStep = millis();
@@ -354,8 +384,8 @@ int runSequence(int mode){
     if (mode == 1){
       pinBlink(timeStep, pinLsr);  // Blinks on laser
     } else if (mode == 2) {
-      Serial.println("RX read");    
-      timeStep = millis();
+      // Sense at the predetermined time and add result to array
+      sensorArrVal[i] = senseAtTime(timeStep, sensorLoc); 
     } else{
       pinBlink(timeStep, pinDeb);  // Blinks on pin 13
     }
@@ -368,6 +398,27 @@ int runSequence(int mode){
   EEPROM_writeAnything(EEloc_angleTarget, angleTarget);
   moveStepper();
   
+  // Sends the measurement values to serial (for mode == 2)
+  if (mode == 2){
+    for (int i=0; i<seqLength; i++){
+      Serial.print(sensorArrVal[i]);
+      Serial.print(" "); // Space between values
+    }
+    Serial.print("\n");  // New line, to signify end 
+  }
+}
+
+int senseAtTime(unsigned long timeStep, int sensorLoc){
+  int sensorValue;
+  unsigned long timeNow = 0;
+  
+  // Block until the seqReadTime
+  while(timeNow < timeStep + seqReadTime){
+    timeNow = millis();
+  } 
+  sensorValue = analogRead(sensorLoc);
+  
+  return sensorValue;
 }
 
 int pinBlink(unsigned long timeStep, int pin){
