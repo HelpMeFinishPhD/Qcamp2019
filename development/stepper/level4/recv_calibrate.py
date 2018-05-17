@@ -15,7 +15,7 @@ import numpy as np
 sender_seq = '0123012301230123'
 
 # Obtain device location
-devloc_file = 'recv_devloc.txt'
+devloc_file = 'devloc.txt'
 with open(devloc_file) as f:
     content = f.readlines()
 serial_addr = content[0][:-1]

@@ -14,7 +14,7 @@ import time
 sender_seq = '0000111122223333'
 
 # Obtain device location
-devloc_file = 'send_devloc.txt'
+devloc_file = 'devloc.txt'
 with open(devloc_file) as f:
     content = f.readlines()
 serial_addr = content[0][:-1]

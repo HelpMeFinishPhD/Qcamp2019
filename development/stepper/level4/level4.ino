@@ -7,6 +7,7 @@
 #include <EEPROM.h>
 #include "EEPROMAnything.h"
 #include <Stepper.h>
+#include <Entropy.h>
 
 // Important parameters
 const int seqLength = 16;  // Polarisation sequence length (16 bit)
@@ -52,6 +53,8 @@ void setup() {
   // Set the laser pin to be output
   pinMode(pinLsr, OUTPUT);
   pinMode(pinDeb, OUTPUT); // For debugging
+  // Set up the entropy library (to generate random numbers)
+  Entropy.initialize();
 }
 
 void loop() {
@@ -266,7 +269,7 @@ unsigned long lasCatch(){
 int specialRandom(int array[], int arrayLength, int maxVal){
   // Fill in the array with specialised random numbers in [0, maxVal)   
   for(int i=0; i<arrayLength; i++){
-    array[i] = random(maxVal);   // NEED TO MODIFY THIS. ASK MATHIAS!!  
+    array[i] = Entropy.random(maxVal);     
   }
 }
 
