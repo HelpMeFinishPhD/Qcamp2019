@@ -38,6 +38,11 @@ const int seqPinStop = 1400;   // Time in sequence to start / ON the pin
 const int seqSyncBlink = 200;  // 200 ms (to initialise the signal)
 const int seqReadTime = 1300;  // 1300 ms (hopefully in the middle of the laser pulse)
     
+// To deal with floating point rounding off error
+// in the conversion between angle and steps,
+// we define a variable which keeps track of that.
+float stepsErrAcc = 0; 
+    
 // initialize the stepper library on pins 8 through 11:
 // need to swap pins 10 and 9 (due to wiring reason)
 Stepper myStepper(stepsPerRevolution,8,10,9,11);            
@@ -283,8 +288,17 @@ int moveStepper(){
   // Serial.print("Moving ");
   // Serial.println(stepsDiff);
   // Moving 
+  
+  // Floating point consideration
+  stepsDiff += stepsErrAcc;
+  stepsErrAcc = stepsDiff - int(stepsDiff);
+  // Debug: Printing stepsErrAcc and stepsDiff (int)
+  // Serial.println(stepsErrAcc);
+  // Serial.println(int(stepsDiff));
+  
+  // Check sign and move
   int dir = checkSign(stepsDiff);
-  for (long i=0; i<abs(stepsDiff); i++){
+  for (long i=0; i<=abs(stepsDiff-1); i++){ 
     myStepper.step(dir);
     delay(stepDelay);
   }
