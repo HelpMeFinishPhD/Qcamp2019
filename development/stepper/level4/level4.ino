@@ -35,8 +35,9 @@ const int seqStepTime = 1500;  // Time between each steps. Def: 1500 ms
 const int seqInitTarget = 1;   // Set initialization polarisation for seq always (D)
 const int seqPinStart = 1200;  // Time in sequence to start / ON the pin
 const int seqPinStop = 1400;   // Time in sequence to start / ON the pin
-const int seqSyncBlink = 200;  // 200 ms (to initialise the signal)
 const int seqReadTime = 1300;  // 1300 ms (hopefully in the middle of the laser pulse)
+const int seqSyncBlink = 500;  // 200 ms (to initialise the signal)
+
     
 // To deal with floating point rounding off error
 // in the conversion between angle and steps,
