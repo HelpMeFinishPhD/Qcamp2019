@@ -59,11 +59,6 @@ for bit in reply_str:
     val_str += str(int(bit) // 2)
     bas_str += str(int(bit) % 2)
 
-print val_str
-print int("0b"+val_str, 0)
-print tohex(int("0b"+val_str, 0), 16)
-print bas_str
-
 # Giving the reply in HEX format
 val_hex = tohex(int("0b"+val_str, 0), 16) # Get int, and convert to 16 bit hex
 bas_hex = tohex(int("0b"+bas_str, 0), 16) # Get int, and convert to 16 bit hex

@@ -79,8 +79,8 @@ for val in meas_arr:
 
 res_hex = tohex(int("0b"+res_str, 0), 16) # Get int, and convert to 16 bit hex
 print "Measurement result bits (in hex):", res_hex[2:].zfill(4)
-print meas_arr # Debug
-print res_str # Debug
+# print meas_arr # Debug
+# print res_str # Debug
 
 # Print last statement and exits the program
 print "\nTask done. Please perform key sifting with Bob via public channel."
