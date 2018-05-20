@@ -48,15 +48,21 @@ sender.write('SEQ? ')
 # Block until receive 1st reply
 while True:
     if sender.in_waiting:
-        reply_str = sender.readlines()[0][:-2] # Remove the /r/n
+        reply_str = sender.readlines()[0][:-1] # Remove the /n
         break
 
+print reply_str
 # Obtain the binary string repr for val and bas bits
 val_str = ""
 bas_str = ""
 for bit in reply_str:
     val_str += str(int(bit) // 2)
     bas_str += str(int(bit) % 2)
+
+print val_str
+print int("0b"+val_str, 0)
+print tohex(int("0b"+val_str, 0), 16)
+print bas_str
 
 # Giving the reply in HEX format
 val_hex = tohex(int("0b"+val_str, 0), 16) # Get int, and convert to 16 bit hex

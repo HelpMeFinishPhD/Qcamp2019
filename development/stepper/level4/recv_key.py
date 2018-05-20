@@ -51,7 +51,7 @@ receiver.write('SEQ? ')
 # Block until receive 1st reply
 while True:
     if receiver.in_waiting:
-        bas_str = receiver.readlines()[0][:-2] # Remove the /r/n
+        bas_str = receiver.readlines()[0][:-1] # Remove the /n
         break
 
 # Giving the reply in HEX format
@@ -65,10 +65,22 @@ receiver.write('RXSEQ ')
 # Block until receive reply
 while True:
     if receiver.in_waiting:
-        meas_str = receiver.readlines()[0][:-2] # Remove the /r/n
+        meas_str = receiver.readlines()[0][:-1] # Remove the /n
         break
 
-print meas_str
+# Obtain the measured bits
+meas_arr = meas_str.split()
+res_str = ''
+for val in meas_arr:
+    if int(val) > threshold: # Higher than threshold -> 0
+        res_str += '0'
+    else:               # Lower than threshold -> 1
+        res_str += '1'
+
+res_hex = tohex(int("0b"+res_str, 0), 16) # Get int, and convert to 16 bit hex
+print "Measurement result bits (in hex):", res_hex[2:].zfill(4)
+print meas_arr # Debug
+print res_str # Debug
 
 # Print last statement and exits the program
-print "Task done. Please perform key sifting with Bob via public channel."
+print "\nTask done. Please perform key sifting with Bob via public channel."
