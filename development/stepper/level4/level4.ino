@@ -14,7 +14,7 @@ const int seqLength = 16;  // Polarisation sequence length (16 bit)
 const int pinLsr = 4;      // Laser pin
 const int pinDeb = 13;     // Debugging pin (LED on the board)
 const int sensorLoc = 0;   // A0
-const int catchTh = 400;   // Threshold in CATCH command ~2V.
+const int catchTh = 200;   // Threshold in CATCH command ~1V.
 
 // Parameters
 const int stepDelay = 2; // 2 ms

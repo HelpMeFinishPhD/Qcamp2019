@@ -51,7 +51,6 @@ while True:
         reply_str = sender.readlines()[0][:-1] # Remove the /n
         break
 
-print reply_str
 # Obtain the binary string repr for val and bas bits
 val_str = ""
 bas_str = ""

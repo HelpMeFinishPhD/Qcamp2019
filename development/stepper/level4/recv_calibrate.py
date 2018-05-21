@@ -55,7 +55,7 @@ while True:
 
 # Printing cosmetics
 print "                    Receiver         "
-print "           |  H  |  V  |  D  |  A  | "
+print "           |  H  |  D  |  V  |  A  | "
 print "       | H | " + str(resA[0]).rjust(3,' ') + " | " + str(resA[1]).rjust(3,' ') + " | " + str(resA[2]).rjust(3,' ') + " | "+ str(resA[3]).rjust(3,' ') + " | "
 print "Sender | D | " + str(resA[4]).rjust(3,' ') + " | " + str(resA[5]).rjust(3,' ') + " | " + str(resA[6]).rjust(3,' ') + " | "+ str(resA[7]).rjust(3,' ') + " | "
 print "       | V | " + str(resA[8]).rjust(3,' ') + " | " + str(resA[9]).rjust(3,' ') + " | " + str(resA[10]).rjust(3,' ') + " | "+ str(resA[11]).rjust(3,' ') + " | "
