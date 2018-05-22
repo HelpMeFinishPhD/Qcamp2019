@@ -13,7 +13,7 @@ import time
 ''' Helper functions '''
 
 def send4BytesC(message_str):
-    if len(str_packet) == 4:
+    if len(message_str) == 4:
         deviceC.write('SEND ') # Flag to send
         deviceC.write(message_str)
     else:
