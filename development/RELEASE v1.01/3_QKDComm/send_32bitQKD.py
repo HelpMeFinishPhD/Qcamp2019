@@ -158,8 +158,8 @@ try:
         time.sleep(wait_till_sync) # Wait until Bob is ready to perform QKD
         key = keySiftAliceC(val_str, bas_str)
         seckey_bin = seckey_bin + key
-        if len(seckey_bin) > 32:
-            pass
+        if len(seckey_bin) > 32: # If the key is longer than 32 bits, stop operation
+            break
         else:
             print "Done! You've got", len(key), "bits. Total length:", len(seckey_bin), "bits."
             n_attempt +=1

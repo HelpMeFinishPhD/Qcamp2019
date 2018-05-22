@@ -156,10 +156,10 @@ try:
     while True:
         print "\nAttempt", n_attempt
         res_str, bas_str = recvKeyQ()
-        seckey_bin = keySiftBobC(res_str, bas_str)
+        key = keySiftBobC(res_str, bas_str)
         seckey_bin = seckey_bin + key
-        if len(seckey_bin) > 32:
-            pass
+        if len(seckey_bin) > 32: # If the key is longer than 32 bits, stop operation
+            break
         else:
             print "Done! You've got", len(key), "bits. Total length:", len(seckey_bin), "bits."
             n_attempt +=1
