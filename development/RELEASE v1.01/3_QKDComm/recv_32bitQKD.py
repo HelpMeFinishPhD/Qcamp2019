@@ -10,8 +10,12 @@ import serial
 import sys
 import time
 
+# IMPORTANT PARAMETER
+threshold = 305  # Put the mean value from polarisation calibration (0 to 1023)
+
 # Parameter
 rep_wait_time = 0.3  # Wait time between packets (in s).
+wait_till_sync = 1   # Time to wait for Bob (until we are sure he is ready).
 
 ''' Helper functions '''
 
@@ -41,6 +45,70 @@ def recv4BytesC():
     hex_list = map(''.join, zip(*[iter(hex_string)]*2))
     ascii_string = "".join([chr(int("0x"+each_hex,0)) for each_hex in hex_list])
     return ascii_string
+
+def recvKeyQ():
+    print "Generating random basis choices..."
+    # Randomising the sequence
+    deviceQ.write('RNDBAS ')
+    # Block until receive reply
+    while True:
+        if deviceQ.in_waiting:
+            print deviceQ.readlines()[0][:-1] # Should display OK
+            break
+    # Find out what is the key
+    deviceQ.write('SEQ? ')
+    # Block until receive 1st reply
+    while True:
+        if deviceQ.in_waiting:
+            bas_str = deviceQ.readlines()[0][:-1] # Remove the /n
+            break
+    print bas_str
+    # Run the sequence
+    print "\nRunning the sequence and performing measurement..."
+    deviceQ.write('RXSEQ ')
+    # Block until receive reply
+    while True:
+        if deviceQ.in_waiting:
+            mes_str = deviceQ.readlines()[0][:-1] # Remove the /n
+            break
+    print "Finished..."
+    # Obtain the measured bits
+    mes_arr = mes_str.split()
+    res_str = ''
+    for val in meas_arr:
+        if int(val) > threshold: # Higher than threshold -> 0
+            res_str += '0'
+        else:               # Lower than threshold -> 1
+            res_str += '1'
+    return res_str, bas_str
+
+def keySiftBobC(resB_str, basB_str):
+    # Zeroth step: convert the bin string repr to 32 bit int
+    resB_str = int("0b"+resB_str, 0)
+    basB_str = int("0b"+basB_str, 0)
+    # First step: send the basis choice to Alice
+    basB_hex = tohex(basB_int, 16) # Get the hex from int
+    send4BytesC(basB_hex[2:].zfill(4)) # Sends this hex to Bob
+    # Second step: Wait for her reply...
+    matchbs_hex = recv4BytesC()   # in hex
+    matchbs_int = int("0x"+matchbs_str, 0)
+    # Fourth step: Perform key sifting (in binary string)
+    matchbs_str = np.binary_repr(matchbs_int, width=16)
+    siftmask_str = ''
+    for i in range(16): # 16 bits
+        if matchbs_str[i] == '0' :
+            siftmask_str += 'X'
+        elif matchbs_str[i] == '1':
+            siftmask_str += resB_str[i]
+    # Remove all the X'es
+    siftkey_str = ''
+    for bit in siftmask_str:
+        if bit is 'X':
+            pass
+        else:
+            siftkey_str += bit
+    # Return the final sifted key
+    return siftkey_str
 
 # Obtain device location
 devloc_fileC = 'devloc_classical.txt'
@@ -73,7 +141,12 @@ try:
     print "You reply --OK!!--"
     send4BytesC("OK!!")
 
-    print "\nPublic channel seems okay. Testing the quantum channel."
+    print "\nPublic channel seems okay... Sending the quantum keys..."
+
+    print "\nAttempt 1"
+    res_str, bas_str = recvKeyQ()
+    time.sleep(wait_till_sync) # Wait until Alice is ready to receive basis
+    print keySiftBobC(res_str, bas_str)
 
 except KeyboardInterrupt:
     # End of program

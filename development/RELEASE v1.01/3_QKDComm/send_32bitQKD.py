@@ -11,9 +11,14 @@ import sys
 import time
 
 # Parameter
-rep_wait_time = 0.3  # Wait time between packets (in s).
+rep_wait_time = 0.3  # Wait time between IR packets (in s).
+wait_till_sync = 1   # Time to wait for Bob (until we are sure he is ready).
 
 ''' Helper functions '''
+
+# Function to convert to hex, with a predefined nbits
+def tohex(val, nbits):
+    return hex((val + (1 << nbits)) % (1 << nbits))
 
 def send4BytesC(message_str):
     if len(message_str) == 4:
@@ -42,6 +47,69 @@ def recv4BytesC():
     ascii_string = "".join([chr(int("0x"+each_hex,0)) for each_hex in hex_list])
     return ascii_string
 
+def sendKeyQ():
+    print "Generating random polarisation sequence..."
+    # Randomising polarisation choice and run the sequence
+    deviceQ.write('RNDSEQ ')
+    # Block until receive reply
+    while True:
+        if deviceQ.in_waiting:
+            print deviceQ.readlines()[0][:-1] # Should display OK
+            break
+    # Find out what is the key
+    deviceQ.write('SEQ? ')
+    # Block until receive 1st reply
+    while True:
+        if deviceQ.in_waiting:
+            reply_str = deviceQ.readlines()[0][:-1] # Remove the /n
+            break
+    # Obtain the binary string repr for val and bas bits
+    val_str = ""
+    bas_str = ""
+    for bit in reply_str:
+        val_str += str(int(bit) // 2)
+        bas_str += str(int(bit) % 2)
+    # Run the sequence
+    print "Running the sequence..."
+    deviceQ.write('TXSEQ ')
+    # Block until receive reply
+    while True:
+        if deviceQ.in_waiting:
+            print deviceQ.readlines()[0][:-1] # Should display OK
+            break
+    # Return the value and basis binary strings
+    return val_str, bas_str
+
+def keySiftAliceC(valA_str, basA_str):
+    # Zeroth step: convert the bin string repr to 32 bit int
+    valA_str = int("0b"+valA_str, 0)
+    basA_str = int("0b"+basA_str, 0)
+    # First step: Listens to Bob's basis
+    basB_hex = recv4BytesC()   # in hex
+    basB_str = int("0x"+basB_hex, 0)
+    # Second step: Compare Alice and Bob's basis
+    matchbs_int = ~ (basA_int ^ basB_int) # Perform matching operation
+    # Third step: Send this matched basis back to Bob
+    matchbs_hex = tohex(matchbs_int, 16) # Get the hex from int
+    send4BytesC(matchbs_hex[2:].zfill(4)) # Sends this hex to Bob
+    # Fourth step: Perform key sifting (in binary string)
+    matchbs_str = np.binary_repr(matchbs_int, width=16)
+    siftmask_str = ''
+    for i in range(16): # 16 bits
+        if matchbs_str[i] == '0' :
+            siftmask_str += 'X'
+        elif matchbs_str[i] == '1':
+            siftmask_str += valA_str[i]
+    # Remove all the X'es
+    siftkey_str = ''
+    for bit in siftmask_str:
+        if bit is 'X':
+            pass
+        else:
+            siftkey_str += bit
+    # Return the final sifted key
+    return siftkey_str
+
 # Obtain device location
 devloc_fileC = 'devloc_classical.txt'
 devloc_fileQ = 'devloc_quantum.txt'
@@ -61,6 +129,9 @@ timeout = 0.1        # Serial timeout (in s).
 deviceC = serial.Serial(serial_addrC, baudrate, timeout=timeout)
 deviceQ = serial.Serial(serial_addrQ, baudrate, timeout=timeout)
 
+# Secure key string (binary)
+seckey_bin = ""
+
 # Start of the UI
 print "Hi Alice, are you ready? Let's make the key!"
 
@@ -73,7 +144,15 @@ try:
 
     print "Bob replies", recv4BytesC()
 
-    print "\nPublic channel seems okay. Testing the quantum channel."
+    print "\nPublic channel seems okay... Testing the quantum device"
+
+
+    print "Sending the quantum keys..."
+
+    print "\nAttempt 1"
+    time.sleep(wait_till_sync) # Wait until Bob is ready to receive key
+    val_str, bas_str = sendKeyQ()
+    print keySiftAliceC(val_str, bas_str)
 
 except KeyboardInterrupt:
     # End of program

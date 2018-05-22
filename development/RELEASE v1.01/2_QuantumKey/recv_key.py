@@ -11,7 +11,7 @@ import sys
 import time
 
 # IMPORTANT
-threshold = 445  # Put the mean value from calibration (0 to 1023)
+threshold = 305  # Put the mean value from calibration (0 to 1023)
 
 # Function to convert to hex, with a predefined nbits
 def tohex(val, nbits):
