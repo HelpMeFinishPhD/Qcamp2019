@@ -68,10 +68,10 @@ try:
     # Testing the public channel
     print "\nTesting the public channel..."
 
-    print "You send --Test--"
-    send4BytesC("Test")
-
     print "Alice sends", recv4BytesC()
+
+    print "You reply --OK!!--"
+    send4BytesC("OK!!")
 
     print "\nPublic channel seems okay. Testing the quantum channel."
 
