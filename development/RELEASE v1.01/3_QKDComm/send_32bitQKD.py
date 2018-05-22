@@ -159,7 +159,7 @@ try:
         time.sleep(wait_till_sync) # Wait until Bob is ready to perform QKD
         key = keySiftAliceC(val_str, bas_str)
         seckey_bin = seckey_bin + key
-        if len(seckey_bin) > 32: # If the key is longer than 32 bits, stop operation
+        if len(seckey_bin) >= 32: # If the key is longer than 32 bits, stop operation
             break
         else:
             print "Done! You've got", len(key), "bits. Total length:", len(seckey_bin), "bits."
@@ -169,7 +169,7 @@ try:
 
     # You've got the key!
     seckey_bin = seckey_bin[:32] # Trim to 32 bits
-    seckey_hex = tohex(seckey_int, 16)
+    seckey_hex = tohex(int("0b"+seckey_bin, 0), 16)
     print "The 32 bit secret key is (in hex):", seckey_hex[2:].zfill(4)
     print "\n Congrats. Use the key wisely. Thank you!"
 
