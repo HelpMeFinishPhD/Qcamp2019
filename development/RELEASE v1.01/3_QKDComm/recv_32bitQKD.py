@@ -164,7 +164,13 @@ try:
             print "Done! You've got", len(key), "bits. Total length:", len(seckey_bin), "bits."
             n_attempt +=1
 
-    print "DONE. The key is", seckey_bin
+    print "DONE. The task is completed."
+
+    # You've got the key!
+    seckey_bin = seckey_bin[:32] # Trim to 32 bits
+    seckey_hex = tohex(seckey_int, 16)
+    print "The 32 bit secret key is (in hex):", seckey_hex[2:].zfill(4)
+    print "\n Congrats. Use the key wisely. Thank you!"
 
 except KeyboardInterrupt:
     # End of program
