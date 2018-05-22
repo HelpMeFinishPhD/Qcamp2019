@@ -9,6 +9,7 @@ Author: Qcumber 2018
 import serial
 import sys
 import time
+import numpy as np
 
 # IMPORTANT PARAMETER
 threshold = 305  # Put the mean value from polarisation calibration (0 to 1023)
@@ -95,7 +96,7 @@ def keySiftBobC(resB_str, basB_str):
     send4BytesC(basB_hex[2:].zfill(4)) # Sends this hex to Bob
     # Second step: Wait for her reply...
     matchbs_hex = recv4BytesC()   # in hex
-    matchbs_int = int("0x"+matchbs_str, 0)
+    matchbs_int = int("0x"+matchbs_hex, 0)
     # Fourth step: Perform key sifting (in binary string)
     matchbs_str = np.binary_repr(matchbs_int, width=16)
     siftmask_str = ''
@@ -149,7 +150,7 @@ try:
 
     print "\nAttempt 1"
     res_str, bas_str = recvKeyQ()
-    time.sleep(wait_till_sync) # Wait until Alice is ready to receive basis
+    time.sleep(5) # Wait until Alice is ready to receive basis
     print keySiftBobC(res_str, bas_str)
 
 except KeyboardInterrupt:

@@ -9,6 +9,7 @@ Author: Qcumber 2018
 import serial
 import sys
 import time
+import numpy as np
 
 # Parameter
 rep_wait_time = 0.3  # Wait time between IR packets (in s).
