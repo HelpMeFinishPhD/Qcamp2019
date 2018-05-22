@@ -30,7 +30,6 @@ def recv4BytesC():
     state = 0   # 0: waiting for STX, 1: transmitting/ wait for ETX
     while True:            # Block until receives a reply
         if deviceC.in_waiting:
-            print "HERE"
             hex_string = deviceC.read(8)
             print hex_string
             if hex_string == '7070741':  # 07-[BEL], 41-A (Header from Alice)
@@ -68,6 +67,7 @@ print "Here we go"
 try:
     print recv4BytesC()
     send4BytesC("BLAH")
+    print recv4BytesC()
 except KeyboardInterrupt:
     # End of program
     deviceC.write('#') # Flag to force end listening

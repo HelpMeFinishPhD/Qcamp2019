@@ -32,7 +32,7 @@ def recv4BytesC():
         if deviceC.in_waiting:
             hex_string = deviceC.read(8)
             if hex_string == '7070742':  # 07-[BEL], 42-B (Header from Bob)
-                print ("Received message!") # Debug
+                # print ("Received message!") # Debug
                 deviceC.write('RECV ')   # Receive the message
                 state = 1
             elif state == 1:
@@ -65,9 +65,8 @@ print "Here we go"
 
 try:
     send4BytesC("HELL")
-    send4BytesC("BLAH")
     print recv4BytesC()
-    print recv4BytesC()
+    send4BytesC("BYE ")
 except KeyboardInterrupt:
     # End of program
     deviceC.write('#') # Flag to force end listening
