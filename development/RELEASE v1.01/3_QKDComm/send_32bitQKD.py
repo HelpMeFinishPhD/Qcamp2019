@@ -81,12 +81,13 @@ def sendKeyQ():
     return val_str, bas_str
 
 def keySiftAliceC(valA_str, basA_str):
+    print "Performing key sifting with Bob..."
     # Zeroth step: convert the bin string repr to 32 bit int
-    valA_str = int("0b"+valA_str, 0)
-    basA_str = int("0b"+basA_str, 0)
+    valA_int = int("0b"+valA_str, 0)
+    basA_int = int("0b"+basA_str, 0)
     # First step: Listens to Bob's basis
     basB_hex = recv4BytesC()   # in hex
-    basB_str = int("0x"+basB_hex, 0)
+    basB_int = int("0x"+basB_hex, 0)
     # Second step: Compare Alice and Bob's basis
     matchbs_int = ~ (basA_int ^ basB_int) # Perform matching operation
     # Third step: Send this matched basis back to Bob

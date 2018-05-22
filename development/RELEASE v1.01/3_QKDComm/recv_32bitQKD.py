@@ -19,6 +19,10 @@ wait_till_sync = 1   # Time to wait for Bob (until we are sure he is ready).
 
 ''' Helper functions '''
 
+# Function to convert to hex, with a predefined nbits
+def tohex(val, nbits):
+    return hex((val + (1 << nbits)) % (1 << nbits))
+
 def send4BytesC(message_str):
     if len(message_str) == 4:
         deviceC.write('SEND ') # Send identifier [BEL]x3 + B
@@ -62,9 +66,8 @@ def recvKeyQ():
         if deviceQ.in_waiting:
             bas_str = deviceQ.readlines()[0][:-1] # Remove the /n
             break
-    print bas_str
     # Run the sequence
-    print "\nRunning the sequence and performing measurement..."
+    print "Running the sequence and performing measurement..."
     deviceQ.write('RXSEQ ')
     # Block until receive reply
     while True:
@@ -75,7 +78,7 @@ def recvKeyQ():
     # Obtain the measured bits
     mes_arr = mes_str.split()
     res_str = ''
-    for val in meas_arr:
+    for val in mes_arr:
         if int(val) > threshold: # Higher than threshold -> 0
             res_str += '0'
         else:               # Lower than threshold -> 1
@@ -83,9 +86,10 @@ def recvKeyQ():
     return res_str, bas_str
 
 def keySiftBobC(resB_str, basB_str):
+    print "Performing key sifting with Alice..."
     # Zeroth step: convert the bin string repr to 32 bit int
-    resB_str = int("0b"+resB_str, 0)
-    basB_str = int("0b"+basB_str, 0)
+    resB_int = int("0b"+resB_str, 0)
+    basB_int = int("0b"+basB_str, 0)
     # First step: send the basis choice to Alice
     basB_hex = tohex(basB_int, 16) # Get the hex from int
     send4BytesC(basB_hex[2:].zfill(4)) # Sends this hex to Bob
