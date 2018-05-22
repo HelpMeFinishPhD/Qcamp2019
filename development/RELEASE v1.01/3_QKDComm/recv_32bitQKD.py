@@ -11,7 +11,7 @@ import sys
 import time
 
 # Parameter
-rep_wait_time = 0.5  # 500 ms to wait for reply from the other side
+rep_wait_time = 0.3  # Wait time between packets (in s).
 
 ''' Helper functions '''
 
@@ -26,13 +26,16 @@ def send4BytesC(message_str):
         print "The message is not 4 bytes. Please check again"
 
 def recv4BytesC():
-    deviceC.write('RECV ') # Flag to recv
+    deviceC.write('RECV ') # Flag to recv (the header)
     state = 0   # 0: waiting for STX, 1: transmitting/ wait for ETX
     while True:            # Block until receives a reply
         if deviceC.in_waiting:
+            print "HERE"
             hex_string = deviceC.read(8)
+            print hex_string
             if hex_string == '7070741':  # 07-[BEL], 41-A (Header from Alice)
                 print ("Received message!") # Debug
+                deviceC.write('RECV ')   # Receive the message
                 state = 1
             elif state == 1:
                 break

@@ -26,13 +26,14 @@ def send4BytesC(message_str):
         print "The message is not 4 bytes. Please check again"
 
 def recv4BytesC():
-    deviceC.write('RECV ') # Flag to recv
+    deviceC.write('RECV ') # Flag to recv (the header)
     state = 0   # 0: waiting for STX, 1: transmitting/ wait for ETX
     while True: # Block until receives a reply
         if deviceC.in_waiting:
             hex_string = deviceC.read(8)
             if hex_string == '7070742':  # 07-[BEL], 42-B (Header from Bob)
                 print ("Received message!") # Debug
+                deviceC.write('RECV ')   # Receive the message
                 state = 1
             elif state == 1:
                 break
