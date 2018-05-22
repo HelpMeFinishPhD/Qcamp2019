@@ -83,8 +83,8 @@ def sendKeyQ():
 
 def keySiftAliceC(valA_str, basA_str):
     # Send ready confirmation to Alice
-    send4Bytes("RDY!")
-    print "Performing key sifting with Bob..."
+    send4BytesC("RDY!")
+    print "Let's do it! Performing key sifting with Bob..."
     # Zeroth step: convert the bin string repr to 32 bit int
     valA_int = int("0b"+valA_str, 0)
     basA_int = int("0b"+basA_str, 0)
