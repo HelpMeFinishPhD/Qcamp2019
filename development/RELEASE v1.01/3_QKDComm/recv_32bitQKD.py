@@ -10,6 +10,26 @@ import serial
 import sys
 import time
 
+''' Helper functions '''
+
+def send4BytesC(message_str):
+    if len(str_packet) == 4:
+        deviceC.write('SEND ') # Flag to send
+        deviceC.write(message_str)
+    else:
+        print "The message is not 4 bytes. Please check again"
+
+def recv4BytesC():
+    deviceC.write('RECV ') # Flag to recv
+    while True:            # Block until receives a reply
+        if deviceC.in_waiting:
+            hex_string = deviceC.read(8)
+            break
+    # Convert to ASCII string
+    hex_list= map(''.join, zip(*[iter(hex_string)]*2))
+    ascii_string = "".join([chr(int("0x"+each_hex,0)) for each_hex in hex_list])
+    return ascii_string
+
 # Obtain device location
 devloc_fileC = 'devloc_classical.txt'
 devloc_fileQ = 'devloc_quantum.txt'
@@ -36,26 +56,6 @@ try:
     send4BytesC("BLAH")
 except KeyboardInterrupt:
     # End of program
-    receiver.write('#') # Flag to force end listening
+    deviceC.write('#') # Flag to force end listening
     print ("\nProgram interrupted. Thank you for using the program!")
     sys.exit()  # Exits the program
-
-''' Helper functions '''
-
-def send4BytesC(message_str):
-    if len(str_packet) == 4:
-        deviceC.write('SEND ') # Flag to send
-        deviceC.write(message_str)
-    else:
-        print "The message is not 4 bytes. Please check again"
-
-def recv4BytesC():
-    deviceC.write('RECV ') # Flag to recv
-    while True:            # Block until receives a reply
-        if deviceC.in_waiting:
-            hex_string = deviceC.read(8)
-            break
-    # Convert to ASCII string
-    hex_list= map(''.join, zip(*[iter(hex_string)]*2))
-    ascii_string = "".join([chr(int("0x"+each_hex,0)) for each_hex in hex_list])
-    return ascii_string
