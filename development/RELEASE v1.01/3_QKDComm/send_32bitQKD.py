@@ -135,6 +135,7 @@ deviceQ = serial.Serial(serial_addrQ, baudrate, timeout=timeout)
 
 # Secure key string (binary)
 seckey_bin = ""
+n_attempt = 1
 
 # Start of the UI
 print "Hi Alice, are you ready? Let's make the key!"
@@ -148,16 +149,22 @@ try:
 
     print "Bob replies", recv4BytesC()
 
-    print "\nPublic channel seems okay... Testing the quantum device"
+    print "\nPublic channel seems okay... Sending the quantum keys..."
 
+    while True:
+        print "\nAttempt", n_attempt
+        time.sleep(wait_till_sync) # Wait until Bob is ready to receive key
+        val_str, bas_str = sendKeyQ()
+        time.sleep(wait_till_sync) # Wait until Bob is ready to perform QKD
+        key = keySiftAliceC(val_str, bas_str)
+        seckey_bin = seckey_bin + key
+        if len(seckey_bin) > 32:
+            pass
+        else:
+            print "Done! You've got", len(key), "bits. Total length:", len(seckey_bin), "bits."
+            n_attempt +=1
 
-    print "Sending the quantum keys..."
-
-    print "\nAttempt 1"
-    time.sleep(wait_till_sync) # Wait until Bob is ready to receive key
-    val_str, bas_str = sendKeyQ()
-    time.sleep(wait_till_sync) # Wait until Bob is ready to perform QKD
-    print keySiftAliceC(val_str, bas_str)
+    print "DONE. The key is", seckey_bin
 
 except KeyboardInterrupt:
     # End of program

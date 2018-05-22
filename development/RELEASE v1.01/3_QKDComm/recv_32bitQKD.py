@@ -135,6 +135,10 @@ timeout = 0.1        # Serial timeout (in s).
 deviceC = serial.Serial(serial_addrC, baudrate, timeout=timeout)
 deviceQ = serial.Serial(serial_addrQ, baudrate, timeout=timeout)
 
+# Secure key string (binary)
+seckey_bin = ""
+n_attempt = 1
+
 # Start of the UI
 print "Hi Bob, are you ready? Let's make the key!"
 
@@ -149,9 +153,18 @@ try:
 
     print "\nPublic channel seems okay... Sending the quantum keys..."
 
-    print "\nAttempt 1"
-    res_str, bas_str = recvKeyQ()
-    print keySiftBobC(res_str, bas_str)
+    while True:
+        print "\nAttempt", n_attempt
+        res_str, bas_str = recvKeyQ()
+        seckey_bin = keySiftBobC(res_str, bas_str)
+        seckey_bin = seckey_bin + key
+        if len(seckey_bin) > 32:
+            pass
+        else:
+            print "Done! You've got", len(key), "bits. Total length:", len(seckey_bin), "bits."
+            n_attempt +=1
+
+    print "DONE. The key is", seckey_bin
 
 except KeyboardInterrupt:
     # End of program
