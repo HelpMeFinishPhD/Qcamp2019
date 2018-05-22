@@ -17,7 +17,7 @@ rep_wait_time = 0.5  # 500 ms to wait for reply from the other side
 
 def send4BytesC(message_str):
     if len(message_str) == 4:
-        deviceC.write('SEND ') # Send identifier [BEL]x3 + A
+        deviceC.write('SEND ') # Send identifier [BEL]x3 + B
         deviceC.write(b'\x07\x07\x07' + 'B') # This is Bob (receiver)
         time.sleep(rep_wait_time)
         deviceC.write('SEND ') # Flag to send
@@ -30,11 +30,11 @@ def recv4BytesC():
     state = 0   # 0: waiting for STX, 1: transmitting/ wait for ETX
     while True:            # Block until receives a reply
         if deviceC.in_waiting:
-            if hex_string == '7070742':  # 07-[BEL], 42-B (Header from Bob)
+            hex_string = deviceC.read(8)
+            if hex_string == '7070741':  # 07-[BEL], 41-A (Header from Alice)
                 print ("Received message!") # Debug
                 state = 1
             elif state == 1:
-                hex_string = deviceC.read(8)
                 break
     # Convert to ASCII string
     hex_list = map(''.join, zip(*[iter(hex_string)]*2))

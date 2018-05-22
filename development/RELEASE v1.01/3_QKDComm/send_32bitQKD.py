@@ -30,11 +30,11 @@ def recv4BytesC():
     state = 0   # 0: waiting for STX, 1: transmitting/ wait for ETX
     while True: # Block until receives a reply
         if deviceC.in_waiting:
+            hex_string = deviceC.read(8)
             if hex_string == '7070742':  # 07-[BEL], 42-B (Header from Bob)
                 print ("Received message!") # Debug
                 state = 1
             elif state == 1:
-                hex_string = deviceC.read(8)
                 break
     # Convert to ASCII string
     hex_list = map(''.join, zip(*[iter(hex_string)]*2))
