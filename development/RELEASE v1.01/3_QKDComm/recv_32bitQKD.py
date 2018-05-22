@@ -31,9 +31,8 @@ def recv4BytesC():
     while True:            # Block until receives a reply
         if deviceC.in_waiting:
             hex_string = deviceC.read(8)
-            print hex_string
             if hex_string == '7070741':  # 07-[BEL], 41-A (Header from Alice)
-                print ("Received message!") # Debug
+                # print ("Received message!") # Debug
                 deviceC.write('RECV ')   # Receive the message
                 state = 1
             elif state == 1:
@@ -62,12 +61,20 @@ timeout = 0.1        # Serial timeout (in s).
 deviceC = serial.Serial(serial_addrC, baudrate, timeout=timeout)
 deviceQ = serial.Serial(serial_addrQ, baudrate, timeout=timeout)
 
-print "Here we go"
+# Start of the UI
+print "Hi Bob, are you ready? Let's make the key!"
 
 try:
-    print recv4BytesC()
-    send4BytesC("BLAH")
-    print recv4BytesC()
+    # Testing the public channel
+    print "\nTesting the public channel..."
+
+    print "You send --Test--"
+    send4BytesC("Test")
+
+    print "Alice sends", recv4BytesC()
+
+    print "\nPublic channel seems okay. Testing the quantum channel."
+
 except KeyboardInterrupt:
     # End of program
     deviceC.write('#') # Flag to force end listening
