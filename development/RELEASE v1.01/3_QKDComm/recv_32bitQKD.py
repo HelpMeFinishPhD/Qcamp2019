@@ -10,12 +10,16 @@ import serial
 import sys
 import time
 
+# Parameter
+rep_wait_time = 0.5  # 500 ms to wait for reply from the other side
+
 ''' Helper functions '''
 
 def send4BytesC(message_str):
-    if len(str_packet) == 4:
+    if len(message_str) == 4:
         deviceC.write('SEND ') # Flag to send
         deviceC.write(message_str)
+        time.sleep(rep_wait_time)
     else:
         print "The message is not 4 bytes. Please check again"
 
