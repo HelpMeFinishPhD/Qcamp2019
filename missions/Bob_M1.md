@@ -4,7 +4,7 @@
 
 As a new company in innovative telecommunication industry, you want to set up a communication link to your sister company, Alice. The link utilises the (old-fashioned) IR signals, similar to how the TV remote control works.
 
-You represent the big companies, while Alice represents the common crowd. In the end, the link will be used to receive sensitive information (i.e. credit card details) from Alice. Thus, the goal of this mission is to establish the communication link between Bob and Alice.
+You represent the big companies, while Alice represents the common crowd. In the end, the link will be used to receive sensitive information (i.e. credit card details) from Alice. **The goal of this mission is to establish the communication link between Bob and Alice.**
 
 This mission is divided into smaller tasks, which consists of compulsory and optional tasks. The compulsory tasks are marked with either [Checkpoint], [Final Task], or [Secret Task] flags, while the unmarked tasks are sort of optional. It is thus a priority to complete all the flagged tasks before the optional tasks, as one will not be able to revisit these tasks after the deadline. The compulsory tasks are very important for the upcoming missions. It is also highly advisable to split the tasks among your teammates.
 
@@ -44,7 +44,7 @@ Step by step walkthrough:
 1. Gather all the necessary components, and note down the polarity and the pin assignments. The facilitator will give a short lecture and demonstration about breadboard, but in case you miss it, you can refer to Section 1.2.3.
 1. Construct the circuit according to the diagram, noting the polarity and the pin assignment. *If the polarity or pin assignment is incorrect, you might burn the components.* If you are unsure about certain stuffs, ask the facilitator.
 1. Upload the Arduino program `ArduinoClassical.ino` to the correct device. You might want to use terminal command `dmesg` to look for the device address, typically in the form of `/dev/ttyACM0` or `/dev/ttyUSB0`.
-1. After finish uploading, you can open the serial monitor with `Shift+Ctrl+M`. Try to send `HELP` to the Arduino, and look at the reply. Try to send blinking signal with `SBLINK` (for Alice), or receive blinking signal with `RBLINK` (for Bob). For Alice, you should be able to see the blinking IR light with your phone camera (except iPhone). For Bob, you should see the indicator light blinking, and the serial monitor prints `BLINK!`. You may also ask the game master to help sending/receiving IR signals from the main computer.
+1. After finish uploading, you can open the serial monitor with `Shift+Ctrl+M`. Try to send `HELP` to the Arduino, and look at the reply. Try to send blinking signal with `SBLINK` (for Alice), or receive blinking signal with `RBLINK` (for Bob). For Alice, you should be able to see the blinking IR light with your phone camera (except iPhone). For Bob, you should see the indicator light blinking, and the serial monitor prints `BLINK!`. You may also ask the `GameMaster` to help sending/receiving IR signals from the main computer.
 1. Try to perform the similar experiment, but now with Alice/Bob instead. Remember to position the sender and receiver roughly in the line of sight.
 
 <br>
@@ -109,7 +109,7 @@ Step by step walkthrough:
 #### [10 points] [Secret Task] A super secret message
 > *After Mission 1, a secretive agent approaches your company, as her colleague promised to send some super secret messages with the IR link that has been constructed by you and Alice. She is not certain that the IR channel is secure, but her colleague thinks so.*
 
-There will be a few messages that you need to receive from Alice within 10 minutes after the conclusion of Mission 1. You need to write this secret messages down and put it inside the secret envelope to the game master. You have to **ensure the security of the content**, and that it **does not leak out** to any adversaries.
+There will be a few secret messages that you need to receive from Alice within 10 minutes after the conclusion of Mission 1. You need to write this secret messages on the document given by the `GameMaster`. You have to **ensure the security of the content**, and that you **seal** the document and **return** it to the `GameMaster` after the conclusion of the mission. Listen to the explicit instructions from the `GameMaster` on when to receive each messages.
 
 Objective: Bob successfully receives all the messages from Alice.
 

@@ -6,7 +6,7 @@ By now you would have established quite a reputation in the communication indust
 
 > *If I offer you quite a handsome sum of money, would you like to hack it?*
 
-And that is it. Now you are the spying company. At some point in time, you overheard that some secretive agent wants to transmit some highly classified information between Alice and Bob. The aim of this mission is to tap into the communication between Alice and Bob, and obtain the super secret message.
+And that is it. Now you are the spying company. At some point in time, you overheard that some secretive agent wants to transmit some highly classified information between Alice and Bob. **The aim of this mission is to tap into the communication between Alice and Bob, and obtain the super secret message.**
 
 This mission is divided into smaller tasks, which consists of compulsory and optional tasks. The compulsory tasks are marked with either [Checkpoint], [Final Task], or [Secret Task] flags, while the unmarked tasks are sort of optional. It is thus a priority to complete all the flagged tasks before the optional tasks, as one will not be able to revisit these tasks after the deadline. The compulsory tasks are very important for the upcoming missions. It is also highly advisable to split the tasks among your teammates.
 
@@ -45,7 +45,7 @@ Point allocation scheme:
 
 > *- Frank-Walter Steinmeier*
 
-Objective: By using the spying tools developed in the checkpoint task, eavesdrop the secret message (you overheard that there will be a total of 4 messages). The gamemaster will tell you when the secret messages are being sent. After receiving all the message, write it down in the super secret form and pass it to the gamemaster.
+Objective: By using the spying tools developed in the checkpoint task, eavesdrop the secret messages sent by Alice to Bob (there will be a total of 4 messages). The `GameMaster` will tell you when the secret messages are being sent. After receiving all the message, **write it down** in the **super secret document** and pass it to the `GameMaster` after the conclusion of the mission.
 
 Point allocation scheme:
 * [Full] points by successfully and correctly eavesdropping all the secret message, or
