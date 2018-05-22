@@ -82,6 +82,8 @@ def sendKeyQ():
     return val_str, bas_str
 
 def keySiftAliceC(valA_str, basA_str):
+    # Send ready confirmation to Alice
+    send4Bytes("RDY!")
     print "Performing key sifting with Bob..."
     # Zeroth step: convert the bin string repr to 32 bit int
     valA_int = int("0b"+valA_str, 0)
@@ -154,6 +156,7 @@ try:
     print "\nAttempt 1"
     time.sleep(wait_till_sync) # Wait until Bob is ready to receive key
     val_str, bas_str = sendKeyQ()
+    time.sleep(wait_till_sync) # Wait until Bob is ready to perform QKD
     print keySiftAliceC(val_str, bas_str)
 
 except KeyboardInterrupt:

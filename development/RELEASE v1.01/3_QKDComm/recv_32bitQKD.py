@@ -16,7 +16,6 @@ threshold = 305  # Put the mean value from polarisation calibration (0 to 1023)
 
 # Parameter
 rep_wait_time = 0.3  # Wait time between packets (in s).
-wait_till_sync = 1   # Time to wait for Bob (until we are sure he is ready).
 
 ''' Helper functions '''
 
@@ -87,7 +86,9 @@ def recvKeyQ():
     return res_str, bas_str
 
 def keySiftBobC(resB_str, basB_str):
-    print "Performing key sifting with Alice..."
+    # Get ready confirmation from Alice
+    recv4BytesC()
+    print "Alice is ready! Performing key sifting with Alice..."
     # Zeroth step: convert the bin string repr to 32 bit int
     resB_int = int("0b"+resB_str, 0)
     basB_int = int("0b"+basB_str, 0)
@@ -150,7 +151,6 @@ try:
 
     print "\nAttempt 1"
     res_str, bas_str = recvKeyQ()
-    time.sleep(5) # Wait until Alice is ready to receive basis
     print keySiftBobC(res_str, bas_str)
 
 except KeyboardInterrupt:
