@@ -98,6 +98,7 @@ def keySiftAliceC(valA_str, basA_str):
     matchbs_int = ~ (basA_int ^ basB_int) # Perform matching operation
     # Third step: Send this matched basis back to Bob
     matchbs_hex = tohex(matchbs_int, 16) # Get the hex from int
+    matchbs_int = int(matchbs_hex, 0) # Safer to convert again from hex
     send4BytesC(matchbs_hex[2:].zfill(4)) # Sends this hex to Bob
     # Fourth step: Perform key sifting (in binary string)
     matchbs_str = np.binary_repr(matchbs_int, width=16)
