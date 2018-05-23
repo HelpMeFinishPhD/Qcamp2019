@@ -113,7 +113,7 @@ def keySiftAliceC(valA_str, basA_str):
         else:
             siftkey_str += bit
     # Return the final sifted key
-    print siftkey_str
+    print siftmask_str, siftkey_str
     return siftkey_str
 
 # Obtain device location
