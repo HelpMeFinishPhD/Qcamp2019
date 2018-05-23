@@ -39,7 +39,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 
         self.offset = 0
         #self.laserOn = False
-        # Whether or not we started the device 
+        # Whether or not we started the device
         self.deviceRunning = False
 
         # Whether or not we have scanned
@@ -67,7 +67,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         self.toggle.clicked.connect(self.toggle_laser)
 
         # Gets a list of avaliable serial ports to connect to and adds to combo box
-        self.ports = glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
+        self.ports = glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/cu.*')
         self.deviceBox.addItems(self.ports)
 
         """
@@ -78,7 +78,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         self.plotWidget.setLabel('left', 'Power', 'V',**labelStyle)
         self.plotWidget.setLabel('bottom', 'Absolute Angle', '',**labelStyle)
 
-        
+
         # Set timer
         self.timer = QTimer()
         self.timer.timeout.connect(self.update)
@@ -135,7 +135,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 
             if self.laserOn:
                 self.toggle_laser()
-            
+
     def toggle_laser(self):
         if self.laserOn:
             #now laser is on, turn off laser
@@ -157,7 +157,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         self.statusbar.showMessage("Resetting Parameters... Done")
 
     def set_angle(self):
-        #Set absolute angle 
+        #Set absolute angle
         abs_angle = self.angleInput.value()
         self.update_angle(abs_angle)
         return None
@@ -187,7 +187,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         offset_value = self.offsetInput.value()
         self.update_offset(offset_value)
         return None
-    
+
     def set_polarisation(self):
         #Set the polarisation
         #The polarisation number
