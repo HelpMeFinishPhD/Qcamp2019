@@ -79,6 +79,7 @@ def sendKeyQ():
             print deviceQ.readlines()[0][:-1] # Should display OK
             break
     # Return the value and basis binary strings
+    print val_str, bas_str
     return val_str, bas_str
 
 def keySiftAliceC(valA_str, basA_str):
@@ -112,6 +113,7 @@ def keySiftAliceC(valA_str, basA_str):
         else:
             siftkey_str += bit
     # Return the final sifted key
+    print siftkey_str
     return siftkey_str
 
 # Obtain device location

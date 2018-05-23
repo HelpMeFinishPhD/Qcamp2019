@@ -12,7 +12,7 @@ import time
 import numpy as np
 
 # IMPORTANT PARAMETER
-threshold = 305  # Put the mean value from polarisation calibration (0 to 1023)
+threshold = 330  # Put the mean value from polarisation calibration (0 to 1023)
 
 # Parameter
 rep_wait_time = 0.3  # Wait time between packets (in s).
@@ -83,6 +83,7 @@ def recvKeyQ():
             res_str += '0'
         else:               # Lower than threshold -> 1
             res_str += '1'
+    print res_str, bas_str
     return res_str, bas_str
 
 def keySiftBobC(resB_str, basB_str):
@@ -114,6 +115,7 @@ def keySiftBobC(resB_str, basB_str):
         else:
             siftkey_str += bit
     # Return the final sifted key
+    print siftkey_str
     return siftkey_str
 
 # Obtain device location

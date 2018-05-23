@@ -25,7 +25,7 @@ if len(key) == 8:
     # Get the XORed message
     xorMessage = [ord(message[i])^expKey_arr[i] for i in range(len(message))]
     # Get the hex representation for the message
-    xorMessage_hex = [hex(xorMessage[i])[2:] for i in range(len(message))]
+    xorMessage_hex = [hex(xorMessage[i])[2:].zfill(2) for i in range(len(message))]
     # Performing some cosmetics and obtain the encrypted Message
     encryptedMessage = ''.join(xorMessage_hex)
     print "\nThe encrypted message is:"

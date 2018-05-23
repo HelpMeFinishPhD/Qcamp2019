@@ -32,3 +32,5 @@ if len(key) == 8 and len(encryptedMessage)%2 == 0:
     print "\nCongratulations! Thank you for using the program!"
 else :
     print "Either the key is not 4 bytes, or the message length is incorrect. Please try again"
+    print len(key)
+    print len(encryptedMessage)
