@@ -52,8 +52,9 @@ while True:
 
             matchbs_int = ~ (basisA_int ^ basisB_int) # Negative of exclusive OR.
             matchbs_hex = tohex(matchbs_int, 16) # 16 bits
-            matchbs_int = int(matchbs_hex, 0) # Safer to convert again from hex
-            # Note: if not, then the int can be negative, which toggles the first bit 
+            matchbs_int = int(matchbs_hex, 0) # Need convert again from hex
+            # Note: This is to trim down the integer back to 16 bit.
+            # The negation in the bitwise operation introduces a sign flip at the 17th bit.
             matchbs_bin = np.binary_repr(matchbs_int, width=16) # Binary string
             print ("\nThe matched basis is given below. Send this to Bob!")
             print "Hex representation:", matchbs_hex[2:].zfill(4)

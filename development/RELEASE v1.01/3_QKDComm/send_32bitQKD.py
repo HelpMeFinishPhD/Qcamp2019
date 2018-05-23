@@ -98,7 +98,7 @@ def keySiftAliceC(valA_str, basA_str):
     matchbs_int = ~ (basA_int ^ basB_int) # Perform matching operation
     # Third step: Send this matched basis back to Bob
     matchbs_hex = tohex(matchbs_int, 16) # Get the hex from int
-    matchbs_int = int(matchbs_hex, 0) # Safer to convert again from hex
+    matchbs_int = int(matchbs_hex, 0) # Need to convert again from hex
     send4BytesC(matchbs_hex[2:].zfill(4)) # Sends this hex to Bob
     # Fourth step: Perform key sifting (in binary string)
     matchbs_str = np.binary_repr(matchbs_int, width=16)
@@ -175,6 +175,9 @@ try:
     # You've got the key!
     seckey_bin = seckey_bin[:32] # Trim to 32 bits
     seckey_hex = tohex(int("0b"+seckey_bin, 0), 32)
+    # Some intrepreter introduces L at the end (which probably means long). Will remove them (cosmetic reason)
+    if seckey_hex[-1] == "L":
+        seckey_hex = seckey_hex[:-1]
     print "The 32 bit secret key is (in hex):", seckey_hex[2:].zfill(8)
     print "\n Congrats. Use the key wisely. Thank you!"
 

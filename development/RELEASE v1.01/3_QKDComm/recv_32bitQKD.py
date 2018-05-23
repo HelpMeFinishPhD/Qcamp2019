@@ -173,6 +173,9 @@ try:
     # You've got the key!
     seckey_bin = seckey_bin[:32] # Trim to 32 bits
     seckey_hex = tohex(int("0b"+seckey_bin, 0), 32)
+    # Some intrepreter introduces L at the end (which probably means long). Will remove them (cosmetic reason)
+    if seckey_hex[-1] == "L":
+        seckey_hex = seckey_hex[:-1]
     print "The 32 bit secret key is (in hex):", seckey_hex[2:].zfill(8)
     print "\n Congrats. Use the key wisely. Thank you!"
 
