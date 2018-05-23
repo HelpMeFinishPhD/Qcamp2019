@@ -28,6 +28,7 @@ def send4BytesC(message_str):
         time.sleep(rep_wait_time)
         deviceC.write('SEND ') # Send message
         deviceC.write(message_str)
+        print message_str
     else:
         print "The message is not 4 bytes. Please check again"
 
@@ -46,6 +47,7 @@ def recv4BytesC():
     # Convert to ASCII string
     hex_list = map(''.join, zip(*[iter(hex_string)]*2))
     ascii_string = "".join([chr(int("0x"+each_hex,0)) for each_hex in hex_list])
+    print ascii_string
     return ascii_string
 
 def sendKeyQ():
