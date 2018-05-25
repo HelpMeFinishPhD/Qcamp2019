@@ -63,13 +63,15 @@ while True:
                      "Waiting to receive the message... \n"
         print (msg_string)
         state = 0 # 0 : waiting for STX, 1 : transmitting/ wait for ETX
+        device.reset_input_buffer() # Flush all the garbages
         device.write('RECV ') # Flag to recv
         while True:
             if device.in_waiting:
                 hex_string = device.read(8)
                 device.write('RECV ') # Flag to recv
+                print hex_string
                 # Looking for start of text
-                if hex_string == '2020202':
+                if hex_string[:7] == '2020202':
                     print ("--- START OF TEXT ---")
                     state = 1
                 elif state == 1:

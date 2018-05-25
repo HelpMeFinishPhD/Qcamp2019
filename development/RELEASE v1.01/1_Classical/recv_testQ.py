@@ -35,6 +35,7 @@ while True:
             if receiver.in_waiting:
                 hex_string = receiver.read(8)
 
+                device.reset_input_buffer() # Flush all the garbages
                 receiver.write('RECV ') # Flag to recv
                 # Translating the text:
                 try:
