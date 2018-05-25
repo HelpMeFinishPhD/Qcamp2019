@@ -33,6 +33,7 @@ def send4BytesC(message_str):
         print "The message is not 4 bytes. Please check again"
 
 def recv4BytesC():
+    device.reset_input_buffer() # Flush all the garbages
     deviceC.write('RECV ') # Flag to recv (the header)
     state = 0   # 0: waiting for STX, 1: transmitting/ wait for ETX
     while True: # Block until receives a reply
