@@ -3,13 +3,26 @@ Modified by: Xi Jie
 Package for Motorstepper controls for QCamp 2018
 """
 import serial
-
+import time
 class MotorControl(object):
 # Module for communicating with the arduino analog pin
     baudrate = 9600 # Arduino baudrate
 
     def __init__(self, port):
-        self.serial = serial.Serial(port, timeout=0.1)
+        self.serial = serial.Serial(port, timeout=3)
+
+        stuck_flag = True
+        while(stuck_flag):
+            self.serial.write('ANG? ')
+            if not self.serial.in_waiting:
+                # print("Stuck... Retrying")
+                self.serial = serial.Serial(port, timeout=3)
+                continue
+            else:
+                time.sleep(1)
+               	self.serial.reset_input_buffer()
+                print("Program Launched Successfully")
+                stuck_flag = not stuck_flag
 
     def close_port(self):
         self.serial.close()

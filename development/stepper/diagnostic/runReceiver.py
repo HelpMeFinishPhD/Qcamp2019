@@ -21,7 +21,7 @@ import threading
 import json
 import numpy as np
 
-REFRESH_RATE = 0.1 # 100 ms
+REFRESH_RATE = 100 # 100 ms
 form_class = uic.loadUiType("guiRcv.ui")[0]
 
 def insanity_check(number, min_value, max_value):
@@ -37,8 +37,8 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 
 	def __init__(self, parent=None):
 
-		self.offset = 0
-		# Whether or not we started the device
+		self.offset = 0 
+		# Whether or not we started the device 
 		self.deviceRunning = False
 		self.measuring = False
 
@@ -66,13 +66,13 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		self.resetButton.clicked.connect(self.reset_params)
 		self.measureButton.clicked.connect(self.measure)
 		self.goToPol.clicked.connect(self.set_polarisation)
-		self.goToAngle.clicked.connect(self.set_angle)
+		self.goToAngle.clicked.connect(self.set_angle_gui)
 		self.startScan.clicked.connect(self.start_scan)
-		self.setOffset.clicked.connect(self.set_offset)
-		self.autoOffset.clicked.connect(self.auto_offset)
+		self.setOffset.clicked.connect(self.set_offset_gui)
+		
 
 		# Gets a list of avaliable serial ports to connect to and adds to combo box
-		self.ports = glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/cu.*')
+		self.ports = glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
 		self.deviceBox.addItems(self.ports)
 
 		# Initialise plots
@@ -82,13 +82,13 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		self.plotWidget.setLabel('left', 'Power', 'V',**labelStyle)
 		self.plotWidget.setLabel('bottom', 'Absolute Angle', '',**labelStyle)
 
-
+		
 		# Set timer
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.update_measure)
 		self.timer.setInterval(REFRESH_RATE)
 		self.timer.start()
-
+		
 
 		# Update status
 		self.statusbar.showMessage("Ready to run ... Select your device!")
@@ -101,8 +101,13 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		self.plot = self.plotWidget.plot(self.xdata, self.ydata, pen={'color':(255,0,0),'width':2})
 		# Some cosmetics
 		self.plotWidget.setLimits(xMin = self.xdata[0], xMax = self.xdata[-1])
-
-
+		self.plotWidget.getAxis('bottom').setTicks([[(value,str(value)) for value in np.arange(-180+self.offset,181+self.offset,45).tolist()]])
+		self.plotWidget.showGrid(x=True)
+		"""
+		#Plotting the HDVA lines
+		self.x_hdva = np.arange(0+self.offset,180+self.offset,45)
+		self.plot2 = self.plotWidget.plot()
+		"""
 	###########
 	# BUTTONS #
 	###########
@@ -115,7 +120,6 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 			# Initialising parameter and starting stuffs
 			self.statusbar.showMessage("Device Running")
 			self.buttonStart.setText("Stop")
-			self.offset = self.motor.get_offset
 
 			#Initialising the motors
 			self.curr_angle = int(self.motor.get_angle())
@@ -144,11 +148,15 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 
 	def start_scan(self):
 		if self.deviceRunning:
+			#Find how many plot points
+			resolution = self.scanRes.value()
+			number_of_points = 360 // (resolution)
 			#Scan through the angles, plot graph and display plot
-			self.xdata = np.arange(-180+self.offset,181+self.offset,1)
+			self.xdata = np.arange(-180+self.offset,181+self.offset,resolution)
+			self.ydata = np.zeros(number_of_points+1)
 			read_count = 0
 			self.statusbar.showMessage("Scanning... Please Wait")
-			while(read_count != 361):
+			while(read_count != (number_of_points+1)):
 				try:
 					self.voltage_A0 = float(self.motor.get_voltage())
 					power_str = str(self.voltage_A0)
@@ -164,6 +172,8 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 			# Plot data
 			self.plotWidget.setLimits(xMin = self.xdata[0], xMax = self.xdata[-1])
 			self.plot.setData(self.xdata, self.ydata)
+			self.plotWidget.getAxis('bottom').setTicks([[(value,str(value)) for value in np.arange(-180+self.offset,181+self.offset,45).tolist()]])
+			self.plotWidget.showGrid(x=True)
 			self.statusbar.showMessage("Scanning... Done")
 		else:
 			self.labelPower.setText("OFF")
@@ -178,38 +188,38 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		self.motor.set_angle(angle_value)
 		self.statusbar.showMessage("Setting Angle... Done")
 	"""
+	def set_angle_gui(self):
+		#Set absolute angle 
+		abs_angle = self.angleInput.value()
+		self.update_angle(abs_angle)
+		return None
 
 	def update_angle(self,angle_value):
 		#Change the absolute angle in GUI and here
 		self.statusbar.showMessage("Updating Angle... Please Wait")
 		self.curr_angle = angle_value
-		#Update angle on GUI
 		self.angleInput.setValue(angle_value)
 		self.motor.set_angle(angle_value)
 		self.statusbar.showMessage("Updating Angle... Done")
+		return None
 
 	def update_offset(self,offset_value):
 		#Change the angle in GUI and here
 		self.statusbar.showMessage("Updating Offset... Please Wait")
 
 		self.offset = offset_value
-		self.offsetInput.setValue(int(offset_value))
+		self.offsetInput.setValue(offset_value)
 		self.motor.set_offset(offset_value)
-		#self.angleInput.setValue(0)
 		self.statusbar.showMessage("Updating Offset... Done")
 		return None
 
-	def set_offset(self):
+	def set_offset_gui(self):
 		#Set offset angle at current angular position
 		offset_value = self.offsetInput.value()
 		self.update_offset(offset_value)
 		return None
 
-	def set_angle(self):
-		#Set absolute angle
-		abs_angle = self.angleInput.value()
-		self.update_angle(abs_angle)
-		return None
+
 
 	def set_polarisation(self):
 		#Set the polarisation
@@ -218,24 +228,16 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		self.update_angle(pol_number*45+self.offset)
 		return None
 
-	def auto_offset(self):
-		#TO BE COMPLETED
-		#From latest plot, find offset and set offset to that value
-
-		#fitted_angle =
-		#Use set_offset to do the last part
-		self.set_offset(fitted_angle)
-		return None
-
 	def measure(self):
 		if self.deviceRunning:
 			if not self.measuring:
 				self.measuring = not self.measuring
 				self.measureButton.setText("Stop Measure")
 			else:
+				self.measuring = not self.measuring
 				self.measureButton.setText("Start Measure")
 		else:
-			self.measuring = not self.measuring
+			self.measuring = False
 			self.labelPower.setText("OFF")
 
 	def update_measure(self):
@@ -243,7 +245,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		if self.measuring:
 			try:
 				self.voltage_A0 = float(self.motor.get_voltage())
-				power_str = str(self.voltage_A0)
+				power_str = '%.2f'%(self.voltage_A0)
 				self.labelPower.setText(power_str + " V")
 			except:
 				# Sometime the serial channel needs to clear some junks
@@ -253,6 +255,9 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 			self.labelPower.setText("OFF")
 
 	def cleanUp(self):
+		if self.deviceRunning:
+			self.buttonStart_clicked()
+
 		print "Closing the program ... Good bye!"
 		self.deviceRunning = False
 		time.sleep(0.5)

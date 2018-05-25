@@ -39,9 +39,9 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 
         self.offset = 0
         #self.laserOn = False
-        # Whether or not we started the device
+        # Whether or not we started the device 
         self.deviceRunning = False
-
+        self.laserOn = False
         # Whether or not we have scanned
         self.scanned = False
 
@@ -62,12 +62,12 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         self.buttonStart.clicked.connect(self.buttonStart_clicked)
         self.resetButton.clicked.connect(self.reset_params)
         self.goToPol.clicked.connect(self.set_polarisation)
-        self.goToAngle.clicked.connect(self.set_angle)
-        self.setOffset.clicked.connect(self.set_offset)
+        self.goToAngle.clicked.connect(self.set_angle_gui)
+        self.setOffset.clicked.connect(self.set_offset_gui)
         self.toggle.clicked.connect(self.toggle_laser)
 
-        # Gets a list of avaliable serial ports to connect to and adds to combo box
-        self.ports = glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/cu.*')
+        # Gets a list of avaliable serial ports to connect  and adds to combo box
+        self.ports = glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
         self.deviceBox.addItems(self.ports)
 
         """
@@ -78,7 +78,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         self.plotWidget.setLabel('left', 'Power', 'V',**labelStyle)
         self.plotWidget.setLabel('bottom', 'Absolute Angle', '',**labelStyle)
 
-
+        
         # Set timer
         self.timer = QTimer()
         self.timer.timeout.connect(self.update)
@@ -119,13 +119,15 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
             #Initialising the motors
             self.curr_angle = int(self.motor.get_angle())
             self.offset  = int(self.motor.get_offset())
+            print(self.offset)
             self.update_offset(self.offset)
             self.update_angle(self.curr_angle)
             self.deviceRunning = not self.deviceRunning
 
 
         else:
-
+            if self.laserOn:
+                self.toggle_laser()
             #Stop the device
             self.deviceRunning = not self.deviceRunning
             self.statusbar.showMessage("Device Stopped")
@@ -135,7 +137,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 
             if self.laserOn:
                 self.toggle_laser()
-
+            
     def toggle_laser(self):
         if self.laserOn:
             #now laser is on, turn off laser
@@ -156,8 +158,8 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         self.update_offset(0)
         self.statusbar.showMessage("Resetting Parameters... Done")
 
-    def set_angle(self):
-        #Set absolute angle
+    def set_angle_gui(self):
+        #Set absolute angle 
         abs_angle = self.angleInput.value()
         self.update_angle(abs_angle)
         return None
@@ -182,12 +184,12 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         self.statusbar.showMessage("Updating Offset... Done")
         return None
 
-    def set_offset(self):
+    def set_offset_gui(self):
         #Set offset angle at current angular position
         offset_value = self.offsetInput.value()
         self.update_offset(offset_value)
         return None
-
+    
     def set_polarisation(self):
         #Set the polarisation
         #The polarisation number
@@ -196,6 +198,12 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         return None
 
     def cleanUp(self):
+        if self.laserOn:
+            self.toggle_laser()
+
+        if self.deviceRunning:
+            self.buttonStart_clicked()
+
         print "Closing the program ... Good bye!"
         self.deviceRunning = False
         time.sleep(0.5)
