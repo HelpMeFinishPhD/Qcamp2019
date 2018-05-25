@@ -31,7 +31,7 @@ while True:
                      "Waiting for data ... \n"
         print(msg_string)
         state = 0 # 0 : waiting for STX, 1 : transmitting/ wait for ETX
-        device.reset_input_buffer() # Flush all the garbages
+        receiver.reset_input_buffer() # Flush all the garbages
         receiver.write('RECV ') # Flag to recv
         while True:
             if receiver.in_waiting:

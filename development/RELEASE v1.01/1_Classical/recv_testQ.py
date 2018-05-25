@@ -30,12 +30,11 @@ while True:
     try:
         print "Waiting for any incoming messages..."
         print "To exit the program, use Ctrl+C\n"
+        receiver.reset_input_buffer() # Flush all the garbages
         receiver.write('RECV ') # Flag to recv
         while True:
             if receiver.in_waiting:
                 hex_string = receiver.read(8)
-                device.reset_input_buffer() # Flush all the garbages
-                receiver.write('RECV ') # Flag to recv
                 # Translating the text:
                 try:
                     # Check and modify the length of string to 8 HEX char
@@ -50,6 +49,9 @@ while True:
                     else:
                         print "Receiving something that does not seem correct:", ascii_string
                         print "To exit the program, use Ctrl+C\n"
+                    # Trying to receive again
+                    receiver.reset_input_buffer() # Flush all the garbages
+                    receiver.write('RECV ') # Flag to recv
                 except ValueError:
                     print("\n ERROR! UNABLE TO DECODE STRING!")
     except KeyboardInterrupt:
