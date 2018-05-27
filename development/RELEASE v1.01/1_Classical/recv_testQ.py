@@ -14,10 +14,12 @@ import time
 text = "Qc!8" # Maximum of 4 bytes / 4 characters
 
 # Obtain device location
-devloc_file = 'devloc.txt'
+devloc_file = '../devloc_classical.txt'
 with open(devloc_file) as f:
-    content = f.readlines()
-serial_addr = content[0][:-1]
+    content = f.readlines()[0]
+    if content[-1] == '\n':  # Remove an extra \n
+        content = content[:-1]
+serial_addr = content
 
 # Other parameters declarations
 baudrate = 9600      # Default in Arduino

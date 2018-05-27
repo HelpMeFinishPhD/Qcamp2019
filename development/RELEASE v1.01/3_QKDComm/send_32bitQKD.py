@@ -121,14 +121,18 @@ def keySiftAliceC(valA_str, basA_str):
     return siftkey_str
 
 # Obtain device location
-devloc_fileC = 'devloc_classical.txt'
-devloc_fileQ = 'devloc_quantum.txt'
+devloc_fileC = '../devloc_classical.txt'
+devloc_fileQ = '../devloc_quantum.txt'
 with open(devloc_fileC) as f:
-    contentC = f.readlines()
-serial_addrC = contentC[0][:-1]
+    contentC = f.readlines()[0]
+    if contentC[-1] == '\n':  # Remove an extra \n
+        contentC = contentC[:-1]
 with open(devloc_fileQ) as f:
-    contentQ = f.readlines()
-serial_addrQ = contentQ[0][:-1]
+    contentQ = f.readlines()[0]
+    if contentQ[-1] == '\n':  # Remove an extra \n
+        contentQ = contentQ[:-1]
+serial_addrC = contentC
+serial_addrQ = contentQ
 
 # Other parameters declarations
 baudrate = 9600      # Default in Arduino

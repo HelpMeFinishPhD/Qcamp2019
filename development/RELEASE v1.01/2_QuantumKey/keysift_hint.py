@@ -25,7 +25,7 @@ while True:
         choice = input(msg_string)
         if choice == 1:
 
-            print ("\nAlice, please input your unsifted key (in hex, max 4 hex):")
+            print ("\nAlice, please input your value bits / unsifted key (in hex, max 4 hex):")
             unkey_hex = raw_input("")
             unkey_int = int("0x"+unkey_hex[:4], 0)
             unkey_bin = np.binary_repr(unkey_int, width=16) # Binary string

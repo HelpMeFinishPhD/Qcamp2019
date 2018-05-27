@@ -10,18 +10,25 @@ import serial
 import sys
 import time
 
-# IMPORTANT
-threshold = 305  # Put the mean value from calibration (0 to 1023)
-
 # Function to convert to hex, with a predefined nbits
 def tohex(val, nbits):
   return hex((val + (1 << nbits)) % (1 << nbits))
 
 # Obtain device location
-devloc_file = 'devloc.txt'
+devloc_file = '../devloc_quantum.txt'
 with open(devloc_file) as f:
-    content = f.readlines()
-serial_addr = content[0][:-1]
+    content = f.readlines()[0]
+    if content[-1] == '\n':  # Remove an extra \n
+        content = content[:-1]
+serial_addr = content
+
+# Obtain threshold
+threshold_file = '../threshold.txt'
+with open(threshold_file) as f:
+    content = f.readlines()[0]
+    if content[-1] == '\n':  # Remove an extra \n
+        content = content[:-1]
+threshold = content
 
 # Other parameters declarations
 baudrate = 9600      # Default in Arduino

@@ -15,10 +15,12 @@ import numpy as np
 sender_seq = '0123012301230123'
 
 # Obtain device location
-devloc_file = 'devloc.txt'
+devloc_file = '../devloc_quantum.txt'
 with open(devloc_file) as f:
-    content = f.readlines()
-serial_addr = content[0][:-1]
+    content = f.readlines()[0]
+    if content[-1] == '\n':  # Remove an extra \n
+        content = content[:-1]
+serial_addr = content
 
 # Other parameters declarations
 baudrate = 9600      # Default in Arduino
