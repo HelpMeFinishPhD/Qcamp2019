@@ -74,7 +74,7 @@ Step by step walkthrough (optional):
 
 > *-  John Perry Barlow*
 
-Objective: Complete the "asymmetrical cryptography handout". No cheating or copying with Bob allowed [insert stern warning].
+Objective: Complete the `Asymmetrical Cryptography` handout. No cheating or copying with Bob allowed [insert stern warning].
 
 Point allocation scheme:
 * Based on the number of correct responses in the handout.
@@ -107,7 +107,7 @@ Step by step walkthrough:
 <br> <br> <br> <br> <br> <br> <br> <br>
 
 #### *Performed __after__ the conclusion of Mission 1:*
-#### [10 points] [Secret Task] A super secret message
+#### [10 points] [Secret Task] Super secret messages
 > *After Mission 1, a secretive agent approaches your company, and she is interested in sending some super secret messages to her accomplice which lives close to Bob. She is very certain that the IR channel is quite secure, but is it?*
 
 There will be a few messages that you need to send to Bob within 10 minutes after the conclusion of Mission 1. They will come in a secret document from the `GameMaster`. You have to **ensure the security of the content**, and that you **seal** the document and **return** it to the `GameMaster` after the conclusion of the mission. Listen to the explicit instructions from the `GameMaster` on when to send each messages.
@@ -119,4 +119,4 @@ Note: You must not communicate with Bob (no talking or signalling), except by us
 Point allocation scheme:
 * [Full] points if all the messages is sent by Alice and received successfully by Bob, or
 * A fraction of [full] points, proportional to the number of messages sent and received successfully.
-* Some points will be forfeited if Alice communicate with Bob in any way besides the chatting software.
+* Some points will be forfeited if Alice communicates with Bob in any way besides the chatting software.

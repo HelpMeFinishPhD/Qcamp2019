@@ -12,7 +12,7 @@ import time
 import numpy as np
 
 # IMPORTANT PARAMETER
-threshold = 330  # Put the mean value from polarisation calibration (0 to 1023)
+threshold = 338  # Put the mean value from polarisation calibration (0 to 1023)
 
 # Parameter
 rep_wait_time = 0.3  # Wait time between packets (in s).

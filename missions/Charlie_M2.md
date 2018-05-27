@@ -1,4 +1,4 @@
-**_Charlie_**
+**_Alice 2 (Charlie)_**
 ## Mission 2 : Eavesdropping Classical Messages
 *90 minutes of gameplay [60/200 points]*
 
@@ -20,25 +20,31 @@ Objective: By using IR receivers installed in different spying locations, look i
 Point allocation scheme:
 * [Full] points after completion of the mission
 
+Step by step walkthrough:
+1. Install the IR receiver, point it to Alice's IR sender, and put it into the listening mode, i.e. by using program `recv_message.py`. Alternatively, you might also want to try the program in `4_HackTools/ClassicalListener/listener.py`, which will listen to everything that is being sent through (not only messages with `[STX]` header and `[ETX]` footer).
+1. You might want to install another IR receiver, just in case the first one fails.
+
 #### [10 points] Xi Jie's handout
 > *Blah blah bluh.*
 
 > *- Xi Jie*
 
-Objective: Complete the "Xi Jie's handout". No cheating or copying with Eve allowed [insert stern warning].
+Objective: Complete the `Xi Jie's` handout. No cheating or copying with Eve allowed [insert stern warning].
 
 Point allocation scheme:
 * Based on the number of correct responses in the handout.
+<br><br>
 
-#### [10 points] Controlling IR Devices
+#### [10 points] Controlling IR devices handout
 > *I could tell my parents hated me. My bath toys were a toaster and a radio.*
 
 > *- Rodney Dangerfield*
 
-Objective: Complete the "Controlling IR Devices". No cheating or copying with Eve allowed [insert stern warning].
+Objective: Complete the `Controlling IR Devices` handout. No cheating or copying with Eve allowed [insert stern warning].
 
 Point allocation scheme:
 * Based on the number of correct responses in the handout.
+<br><br>
 
 #### [20 points] [Final Task] Eavesdrop the secret message
 > *No one, including me, can totally rule out data surveillance. That's why I write my text messages and emails so that they stand up to being read.*

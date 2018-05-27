@@ -7,6 +7,7 @@ As a security company which mainly focuses on spying on the technologies of othe
 The company Alice and Bob have quite a reputation, and you want to figure out whether their technologies are reliable (or even secure). Thanks to his expertise, your informant manages to copy over the necessary tecnical documents. **The aim of this mission is to understand what Alice and Bob are up to (by developing the same IR communication channel), and then try to see whether there is a way to spy onto their channel.**
 
 This mission is divided into smaller tasks, which consists of compulsory and optional tasks. The compulsory tasks are marked with either [Checkpoint], [Final Task], or [Secret Task] flags, while the unmarked tasks are sort of optional. It is thus a priority to complete all the flagged tasks before the optional tasks, as one will not be able to revisit these tasks after the deadline. The compulsory tasks are very important for the upcoming missions. It is also highly advisable to split the tasks among your teammates.
+<br><br>
 
 #### [10 points] BREAK the ice, STOMP the ground, LIFT the air
 > *This is sort of compulsory, but only to get the group going :P*
@@ -21,7 +22,7 @@ Point allocation scheme:
 
 Step by step walkthrough:
 1. A good team is a team whose members knows each other pretty well.
-1. A good team is also a team which can split the tasks in an efficient manner. Actually, when Mission 2 arrives, your team will be split into 2 subteam, one trying to complete Mission 1, and another one focused on hacking. So, plan well ahead.
+1. A good team is also a team which can split the tasks in an efficient manner. Actually sooner or later, your team might be split into 2 (or even 3) subteams. So, plan well ahead.
 
 #### [30 points] [Checkpoint] Without the electronics, there is NONE
 > *Resistor: I'm gonna ask you this one time, where is the circuit?*
@@ -32,7 +33,7 @@ Step by step walkthrough:
 
 > *- 1 divided by 0*
 
-Objective: Construct two circuits, one capable of sending IR signals, and one capable of receiving IR signals. This means, you need to emulate both Alice and Bob. The objective is accomplished when both sender and receiver circuits are built and working properly.
+Objective: Construct two circuits, one capable of sending IR signals, and one capable of receiving IR signals. This means, you need to emulate both Alice and Bob. You might also want to split the team into the `sender / Alice` and the `receiver / Bob`. The objective is accomplished when both sender and receiver circuits are built and working properly.
 
 Upon the completion of this task, you **will receive** another copy of sender and receiver ciruit. Why? Because we are nice `GameMasters` and don't want you to repeat the same boring task :)
 
@@ -46,8 +47,8 @@ Step by step walkthrough:
 1. Gather all the necessary components, and note down the polarity and the pin assignments. The facilitator will give a short lecture and demonstration about breadboard, but in case you miss it, you can refer to Section 1.2.3.
 1. Construct the circuit according to the diagram, noting the polarity and the pin assignment. *If the polarity or pin assignment is incorrect, you might burn the components.* If you are unsure about certain stuffs, ask the facilitator.
 1. There are two ways to proceed. <br>
-[First way: the open way] Construct the sender and receiver circuit in the same breadboard using the same Arduino. However, you will need the help from the `GameMaster` to send/receive IR signals from the main computer. You might disrupt Alice and Bob in the process, as they will be doing similar stuffs at that time. This might or might not blow up your cover... <br>
-[Second way: the discreet way] Construct the sender and receiver facing each other, each connected to different Arduinos, and preferably two different computers. You can send with one Arduino and receive with another one. However, you might want to cover up the devices with a box or something similar, because you don't want Alice or Bob to detect the your IR signal. Though they might ask you what the box is for...
+**[First way: the open way]** Construct the sender and receiver circuit in the same breadboard using the same Arduino. However, you will need the help from the `GameMaster` to send/receive IR signals from the main computer. You might disrupt Alice and Bob in the process, as they will be doing similar stuffs at that time. Your cover might be blown... <br>
+**[Second way: the discreet way]** Construct the sender and receiver facing each other, each connected to different Arduinos, and preferably two different computers. You can send with one Arduino and receive with another one. However, you might want to cover up the devices with a box or something similar, because you don't want Alice or Bob to detect the your IR signal. Though they might ask you what the box is for...
 1. Upload the Arduino program `ArduinoClassical.ino` to the correct device. You might want to use terminal command `dmesg` to look for the device address, typically in the form of `/dev/ttyACM0` or `/dev/ttyUSB0`.
 1. After finish uploading, you can open the serial monitor with `Shift+Ctrl+M`. Try to send `HELP` to the Arduino, and look at the reply. Try to send blinking signal with `SBLINK`  or receive blinking signal with `RBLINK`. For sender, you should be able to see the blinking IR light with your phone camera (except iPhone). For receiver, you should see the indicator light blinking, and the serial monitor prints `BLINK!`.
 
@@ -57,7 +58,7 @@ Step by step walkthrough:
 
 > *-  John Perry Barlow*
 
-Objective: Complete the "asymmetrical cryptography handout". No cheating or copying with Eve allowed [insert stern warning].
+Objective: Complete the `Asymmetrical Cryptography` handout. No cheating or copying with Eve allowed [insert stern warning].
 
 Point allocation scheme:
 * Based on the number of correct responses in the handout.
