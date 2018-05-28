@@ -1,8 +1,0 @@
-The IR repo can be downloaded from:
-https://github.com/z3t0/Arduino-IRremote
-
-The entropy repo can be downloaded from:
-https://github.com/pmjdebruijn/Arduino-Entropy-Library
-Source: https://sites.google.com/site/astudyofentropy/home
-
-You can import the library from the arduino program. You might need to rename the folder (to remove the hyphen)
