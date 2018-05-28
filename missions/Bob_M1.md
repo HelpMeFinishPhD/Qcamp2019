@@ -97,7 +97,7 @@ Point allocation scheme:
 * Maximum of [80%] of total points, proportional to the effort and the number of completed tasks at the end of the time limit.
 
 Step by step walkthrough:
-1. First, test the fidelity of the signal. Alice can run `send_testQ.py` and Bob can run `recv_testQ.py`. The programs will just send and receive `Qc!8` repeatedly. Note that you might need to modify the device address at `devloc.txt`.
+1. First, test the fidelity of the signal. Alice can run `send_testQ.py` and Bob can run `recv_testQ.py`. The programs will just send and receive `Qc!8` repeatedly. Note that you might need to modify the device address at `devloc_classical.txt`.
 1. To try sending a longer messages, Alice can run `send_message.py` and Bob can run `recv_message.py`.
 1. To construct a two way communication, Alice needs to build a receiver circuit and Bob needs to build a sender circuit. Alice's member (who is now a professional) can help Bob's member in building the sender circuit, and vice versa.
 1. After building them, repeat the above procedures: send and receving blinking signal, test for signal fidelity, and test to send a message (but now in the other direction).

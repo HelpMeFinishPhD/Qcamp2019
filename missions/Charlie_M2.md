@@ -51,7 +51,7 @@ Point allocation scheme:
 
 > *- Frank-Walter Steinmeier*
 
-Objective: By using the spying tools developed in the checkpoint task, eavesdrop the secret messages sent by Alice to Bob (there will be a total of 4 messages). The `GameMaster` will tell you when the secret messages are being sent. After receiving all the message, **write it down** in the **super secret document** and pass it to the `GameMaster` after the conclusion of the mission.
+Objective: By using the spying tools developed in the checkpoint task, eavesdrop the secret messages sent by Alice to Bob (there will be a total of 3 messages). The `GameMaster` will tell you when the secret messages are being sent. After receiving all the message, **write it down** in the **super secret document** and pass it to the `GameMaster` after the conclusion of the mission.
 
 Point allocation scheme:
 * [Full] points by successfully and correctly eavesdropping all the secret message, or

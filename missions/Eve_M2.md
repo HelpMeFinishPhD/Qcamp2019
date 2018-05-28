@@ -2,7 +2,7 @@
 ## Mission 2 : Eavesdropping Quantum Keys
 *90 minutes of gameplay [60/200 points]*
 
-Blah blah storyline **The aim of this mission is to perform a photon number splitting attack, analyse your measurement results, and determine the secure key.**
+Your evil mastermind seems to work out. Thanks to your professional team mate, you now have a direct connection (splitted) from Alice's photons. You can look at her polarisation choices. At the same time, you have made some deal with Charlie. Things are just going to get better **The aim of this mission is to perform a photon number splitting attack, analyse your measurement results, and determine the secure key.**
 
 This mission is divided into smaller tasks, which consists of compulsory and optional tasks. The compulsory tasks are marked with either [Checkpoint], [Final Task], or [Secret Task] flags, while the unmarked tasks are sort of optional. It is thus a priority to complete all the flagged tasks before the optional tasks, as one will not be able to revisit these tasks after the deadline. The compulsory tasks are very important for the upcoming missions. It is also highly advisable to split the tasks among your teammates.
 

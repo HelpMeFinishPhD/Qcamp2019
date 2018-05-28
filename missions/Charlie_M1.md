@@ -1,6 +1,6 @@
 **_Alice 2 (Charlie)_**
 ## Mission 1 : Establishing Classical Communication
-*70 minutes of gameplay [70/200 points]*
+*80 minutes of gameplay [70/200 points]*
 
 As a security company which mainly focuses on spying on the technologies of other companies, you obtain an intel from your informant that Alice and Bob is developing a new communication channel based on old TV remotes.
 
@@ -83,6 +83,6 @@ Point allocation scheme:
 
 Step by step walkthrough:
 1. With the new copy of the circuit, emulate the role of Alice and Bob who tries to chat. Construct it such that the receivers and senders (for both sides) are facing each other, and that each sides are connected to different Arduino, and also preferably different computers. You might or might not need the cover box, depending on the choice that you made previously.  
-1. First, test the fidelity of the signal. The sender can run `send_testQ.py` and the receiver can run `recv_testQ.py`. The programs will just send and receive `Qc!8` repeatedly. Test also for the other direction of communication. Note that you might need to modify the device address at `devloc.txt`.
+1. First, test the fidelity of the signal. The sender can run `send_testQ.py` and the receiver can run `recv_testQ.py`. The programs will just send and receive `Qc!8` repeatedly. Test also for the other direction of communication. Note that you might need to modify the device address at `devloc_classical.txt`.
 1. To try sending a longer messages, the sender can run `send_message.py` and the receiver can run `recv_message.py`.
 1. If everything works nicely, both sides can run `chatting.py`. One side can turn into listening mode by pressing an `Enter` button. By now you should be able to chat across computers, like what Alice and Bob is doing right now.

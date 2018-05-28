@@ -1,6 +1,6 @@
 **_Bob 2 (Eve)_**
 ## Mission 1 : Establishing Classical Communication
-*70 minutes of gameplay [70/200 points]*
+*80 minutes of gameplay [70/200 points]*
 
 As a group of physicists who naturally have curious minds, you read a seminal 1984 paper by Bennett and Brasard about quantum cryptography. After talking with your friends and colleagues, you are pretty convinced that this scheme will work nicely, but with a litte catch: you have a limited funding and you can't buy single photon detectors.
 
@@ -53,8 +53,9 @@ Point allocation scheme:
 * [10%] of total points reduction for each unsatisfactory Q&A session. This reduction is capped at [30%] of total points.
 
 Step by step walkthrough:
-1. Run the polarisation alignment `GUI` programs (in the folder `Alignment GUI`): For Alice, `runSender.py` and for Bob, `runReceiver.py`. You might want to refer to `Section 3.4.3` for more information regarding the GUI. The goal of this exercise is to align Alice and Bob polarisation axis with respect to each other, i.e. if Alice sends `H` polarised light, and Bob measures in `H` polarisation basis, the measurement result should give maximal intensity.
-1. Run the calibration program `send_calibrate.py` (for Alice) and `recv_calibrate.py` (for Bob). This program measures the `Intensity Matrix` between different polarisation states of Alice and Bob. Make sure that the signal degradation is lower than 0.2 (or repeat the previous step if not), and note down the mean value of the intensity.
+1. Upload the Arduino program `ArduinoQuantum.ino` to the correct device.
+1. Run the polarisation alignment `GUI` programs (in the folder `Alignment GUI`): For Alice, `runSender.py` and for Bob, `runReceiver.py`. You might want to refer to `Section 3.4.3` for more information regarding the GUI. The goal of this exercise is to align Alice and Bob polarisation axis with respect to each other, i.e. if Alice sends `H` polarised light, and Bob measures in `H` polarisation basis, the measurement result should give maximal intensity. *You need to close the GUI (or at least stop the device) before moving on to other tasks.*
+1. Set the correct device address in `devloc_quantum.txt`. Run the calibration program `send_calibrate.py` (for Alice) and `recv_calibrate.py` (for Bob). This program measures the `Intensity Matrix` between different polarisation states of Alice and Bob. Make sure that the signal degradation is lower than 0.2 (or repeat the previous step if not), and note down the mean value of the intensity.
 1. Be prepared for the Q&A sessions. You might wish to start asking your facilitator questions when you encounter something that you don't really understand. This Q&A sessions will be in effect from now until the conclusion of Mission 2.
 <br><br><br><br>
 
@@ -85,6 +86,6 @@ Point allocation scheme:
 * [80%] of total points by completing all the objectives within the time limit, or if fails,
 
 Step by step walkthrough:
-1. Alice runs `send_key.py` and Bob runs `recv_key.py`. Note that Bob needs to run his program first. After running the programs, Alice will obtain the unsifted key (16 bits) and basis choices (16 bits), while Bob will obtain the measurement result (16 bits) and basis choices (16 bits). For Bob, remember to set the value of `threshold` in `recv_key.py` to be the mean of the intensity matrix.
+1. Alice runs `send_key.py` and Bob runs `recv_key.py`. Note that Bob needs to run his program first. After running the programs, Alice will obtain the unsifted key (16 bits) and basis choices (16 bits), while Bob will obtain the measurement result (16 bits) and basis choices (16 bits). For Bob, remember to set the value in `threshold.txt` to be the mean of the intensity matrix.
 1. Alice and Bob fills in the keysift form according to the procedures. Supposedly, they are only allowed to pass the `public channel` paper back and forth. However, in the trials Alice and Bob can work together and help each other. They might also benefit with the program `keysift_hint.py`.
 1. Alice and Bob attempt the second objectives, i.e. without any other communication channel except the `public channel` paper.
