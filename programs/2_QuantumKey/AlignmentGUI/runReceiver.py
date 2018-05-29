@@ -3,9 +3,9 @@
 Created on May 2018
 
 Modified from the QITlab program
-@author: Adrian Utama
+@author: Qcumber2018
 
-Powermeter for Arduino Analogread (PyQt) Version 1.01
+GUI for Receiver program 
 """
 
 import sys
@@ -37,8 +37,8 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 
 	def __init__(self, parent=None):
 
-		self.offset = 0 
-		# Whether or not we started the device 
+		self.offset = 0
+		# Whether or not we started the device
 		self.deviceRunning = False
 		self.measuring = False
 
@@ -69,7 +69,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		self.goToAngle.clicked.connect(self.set_angle_gui)
 		self.startScan.clicked.connect(self.start_scan)
 		self.setOffset.clicked.connect(self.set_offset_gui)
-		
+
 
 		# Gets a list of avaliable serial ports to connect to and adds to combo box
 		self.ports = glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
@@ -82,13 +82,13 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		self.plotWidget.setLabel('left', 'Power', 'V',**labelStyle)
 		self.plotWidget.setLabel('bottom', 'Absolute Angle', '',**labelStyle)
 
-		
+
 		# Set timer
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.update_measure)
 		self.timer.setInterval(REFRESH_RATE)
 		self.timer.start()
-		
+
 
 		# Update status
 		self.statusbar.showMessage("Ready to run ... Select your device!")
@@ -189,7 +189,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		self.statusbar.showMessage("Setting Angle... Done")
 	"""
 	def set_angle_gui(self):
-		#Set absolute angle 
+		#Set absolute angle
 		abs_angle = self.angleInput.value()
 		self.update_angle(abs_angle)
 		return None

@@ -3,9 +3,9 @@
 Created on May 2018
 
 Modified from the QITlab program
-@author: Adrian Utama
+@author: Qcumber2018
 
-Powermeter for Arduino Analogread (PyQt) Version 1.01
+GUI for Receiver program 
 """
 
 import sys
@@ -39,7 +39,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 
         self.offset = 0
         #self.laserOn = False
-        # Whether or not we started the device 
+        # Whether or not we started the device
         self.deviceRunning = False
         self.laserOn = False
         # Whether or not we have scanned
@@ -78,7 +78,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         self.plotWidget.setLabel('left', 'Power', 'V',**labelStyle)
         self.plotWidget.setLabel('bottom', 'Absolute Angle', '',**labelStyle)
 
-        
+
         # Set timer
         self.timer = QTimer()
         self.timer.timeout.connect(self.update)
@@ -137,7 +137,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 
             if self.laserOn:
                 self.toggle_laser()
-            
+
     def toggle_laser(self):
         if self.laserOn:
             #now laser is on, turn off laser
@@ -159,7 +159,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         self.statusbar.showMessage("Resetting Parameters... Done")
 
     def set_angle_gui(self):
-        #Set absolute angle 
+        #Set absolute angle
         abs_angle = self.angleInput.value()
         self.update_angle(abs_angle)
         return None
@@ -189,7 +189,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
         offset_value = self.offsetInput.value()
         self.update_offset(offset_value)
         return None
-    
+
     def set_polarisation(self):
         #Set the polarisation
         #The polarisation number

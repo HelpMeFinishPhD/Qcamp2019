@@ -28,7 +28,7 @@ with open(threshold_file) as f:
     content = f.readlines()[0]
     if content[-1] == '\n':  # Remove an extra \n
         content = content[:-1]
-threshold = content
+threshold = float(content) # Get the float value
 
 # Other parameters declarations
 baudrate = 9600      # Default in Arduino

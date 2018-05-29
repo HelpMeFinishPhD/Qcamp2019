@@ -37,13 +37,13 @@ while True:
             hex_string = receiver.read(8)
             receiver.write('RECV ') # Flag to recv (again)
             # Looking for any kind of headers
-            if hex_string == '2020202':
-                print ("\n--- START OF TEXT ---\n")
-            elif hex_string == '3030303':
-                print ("\n--- END OF TEXT ---\n")
-            elif hex_string == '7070741':
+            if hex_string[:7] == '2020202':
+                print ("\n--- START OF TEXT ---")
+            elif hex_string[:7] == '3030303':
+                print ("\n--- END OF TEXT ---")
+            elif hex_string[:7] == '7070741':
                 print ("\nIncoming message from Alice:")
-            elif hex_string == '7070742':
+            elif hex_string[:7] == '7070742':
                 print ("\nIncoming message from Bob:")
             else:
                 try:

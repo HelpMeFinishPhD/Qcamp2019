@@ -11,11 +11,30 @@ import sys
 import time
 import numpy as np
 
-# IMPORTANT PARAMETER
-threshold = 338  # Put the mean value from polarisation calibration (0 to 1023)
-
 # Parameter
 rep_wait_time = 0.3  # Wait time between packets (in s).
+
+# Obtain device location
+devloc_fileC = '../devloc_classical.txt'
+devloc_fileQ = '../devloc_quantum.txt'
+with open(devloc_fileC) as f:
+    contentC = f.readlines()[0]
+    if contentC[-1] == '\n':  # Remove an extra \n
+        contentC = contentC[:-1]
+with open(devloc_fileQ) as f:
+    contentQ = f.readlines()[0]
+    if contentQ[-1] == '\n':  # Remove an extra \n
+        contentQ = contentQ[:-1]
+serial_addrC = contentC
+serial_addrQ = contentQ
+
+# Obtain threshold
+threshold_file = '../threshold.txt'
+with open(threshold_file) as f:
+    content = f.readlines()[0]
+    if content[-1] == '\n':  # Remove an extra \n
+        content = content[:-1]
+threshold = float(content) # Get the float value
 
 ''' Helper functions '''
 
@@ -120,20 +139,6 @@ def keySiftBobC(resB_str, basB_str):
     # Return the final sifted key
     print siftmask_str, siftkey_str
     return siftkey_str
-
-# Obtain device location
-devloc_fileC = '../devloc_classical.txt'
-devloc_fileQ = '../devloc_quantum.txt'
-with open(devloc_fileC) as f:
-    contentC = f.readlines()[0]
-    if contentC[-1] == '\n':  # Remove an extra \n
-        contentC = contentC[:-1]
-with open(devloc_fileQ) as f:
-    contentQ = f.readlines()[0]
-    if contentQ[-1] == '\n':  # Remove an extra \n
-        contentQ = contentQ[:-1]
-serial_addrC = contentC
-serial_addrQ = contentQ
 
 # Other parameters declarations
 baudrate = 9600      # Default in Arduino
