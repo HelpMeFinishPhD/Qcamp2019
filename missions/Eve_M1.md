@@ -33,7 +33,7 @@ Step by step walkthrough:
 1. A good team is a team whose members knows each other pretty well.
 1. A good team is also a team which can split the tasks in an efficient manner. Actually sooner or later, your team might be split into 2 (or even 3) subteams. So, plan well ahead.
 
-<br><br><br><br><br>
+<br>
 
 #### [30 points] [Checkpoint] Align the polarisation
 > *No! Marty! We've already agreed that having information about the future can be extremely dangerous. Even if your intentions are good, it can backfire drastically!*
@@ -41,21 +41,25 @@ Step by step walkthrough:
 > *- Dr. Emmit Brown*
 
 Objective: You are going to emulate what the signal sender (Alice) and the signal receiver (Bob) will be doing, so you might also want to split the team into the `sender / Alice` and the `receiver / Bob`. You will need to understand this process pretty well as it will be useful in the later parts (mostly for hacking). Particularly, in this mission, you need to:
+
 1. Align the polarisation between Alice (the sender) and Bob (the receiver),
-1. Obtain the intensity matrix, with signal degradation less than 0.2, and
+> Alice's H polarisation might be oriented differently from Bob's H polarisation (imagine their heads are tilted), so alignment is required.
+1. Obtain the intensity matrix, with signal degradation less than 0.255, and
+> Degradation indicates how different Alice's H,D,V,A's are from Bob's.
 1. Be prepared to undergo some short Q&A sessions with the facilitator to test your understanding.
 
 **Very important notes**: Read the safety precautions in Section 1.3.1 of the technical documents. This is *extremely important*, as you will get tested about this at the end of the session (no joking, confirm plus chop!).
 
+
 Point allocation scheme:
 * [Full] points upon completion of the objectives
-* [80%] of total points upon completion of the objectives, but with the signal degradation higher than 0.2.
+* [80%] of total points upon completion of the objectives, but with the signal degradation higher than 0.25.
 * [10%] of total points reduction for each unsatisfactory Q&A session. This reduction is capped at [30%] of total points.
 
 Step by step walkthrough:
 1. Upload the Arduino program `ArduinoQuantum.ino` to the correct device.
 1. Run the polarisation alignment `GUI` programs (in the folder `Alignment GUI`): For Alice, `runSender.py` and for Bob, `runReceiver.py`. You might want to refer to `Section 3.4.3` for more information regarding the GUI. The goal of this exercise is to align Alice and Bob polarisation axis with respect to each other, i.e. if Alice sends `H` polarised light, and Bob measures in `H` polarisation basis, the measurement result should give maximal intensity. *You need to close the GUI (or at least stop the device) before moving on to other tasks.*
-1. Set the correct device address in `devloc_quantum.txt`. Run the calibration program `send_calibrate.py` (for Alice) and `recv_calibrate.py` (for Bob). This program measures the `Intensity Matrix` between different polarisation states of Alice and Bob. Make sure that the signal degradation is lower than 0.2 (or repeat the previous step if not), and note down the mean value of the intensity.
+1. Set the correct device address in `devloc_quantum.txt`. Run the calibration program `send_calibrate.py` (for Alice) and `recv_calibrate.py` (for Bob). This program measures the `Intensity Matrix` between different polarisation states of Alice and Bob. Make sure that the signal degradation is lower than 0.25 (or repeat the previous step if not), and note down the mean value of the intensity.
 1. Be prepared for the Q&A sessions. You might wish to start asking your facilitator questions when you encounter something that you don't really understand. This Q&A sessions will be in effect from now until the conclusion of Mission 2.
 <br><br><br><br>
 
@@ -70,7 +74,7 @@ Point allocation scheme:
 * Based on the number of correct responses in the handout.
 
 Note: Only do this when there is a free time or there is a member in your group who happens to be free.
-<br><br><br><br>
+<br><br>
 
 #### [20 points] [Final Task] Establishing secure key
 > *There is an interesting similarity between probabilistic encryption and quantum cryptography: both rely on the notion of reduction. However, whereas the former reduces the unproved computational complexity of some outstanding problems of number theory to the difficulty of breaking the schemes, the latter relies on the most fundamental beliefs of quantum physics.*

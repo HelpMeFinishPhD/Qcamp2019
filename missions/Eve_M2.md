@@ -12,35 +12,46 @@ This mission is divided into smaller tasks, which consists of compulsory and opt
 > *- John McAfee*
 
 Objectives:
-1. Successfully detect Alice's photons,
-2. Modify the angle of the receiver polariser to be able to distinguish the 4 polarisation states sent by Alice, and
-3. Predict the values of the polarisatin value bits and basis bits sent by Alice
+1. Intercept some of Alice's photons. Successfully perform polarisation projection measurements on Alice's photons using two photodetectors.
+2. Analyse the signals from both photodetectors and associate the correct polarisation state to each signal.
+
 
 Point allocation scheme:
 * [Full] points after completion of the mission
 
 Step by step walkthrough:
-1. Jianwei's command
 
-#### [10 points] Jian Wei's handout
-> *Blah blah bluh.*
+1. Run `key_logger.py` to intercept the unsifted key sent from Alice to Bob through the quantum channel. (Notice how Alice's signal is intercepted through the use of the beamsplitter.)
 
-> *- Jian Wei*
+2. Run `runInterceptor.py` to analyse the unsifted key.
 
-Objective: Complete the `Jian Wei's` handout. No cheating or copying with Charlie allowed [insert stern warning].
+* First, load the file using the dropdown list and click `Start`.
+
+* A plot of the Signal 1 vs. Signal 2 should display groups of data. The grouping is already done using cluster analysis. The groups are arbitrarily assigned the labels `A`, `B`, ..., `E`.
+
+* Correctly match the labels `A`, `B`, ..., `E` to the polarisation states `Horizontal`,`Vertical`,...,`Anti-diagonal`. Click `decode` to convert the signal voltages to polarisation states.
+
+* (Note that at this point, we only decoded for the polarisation states sent through the quantum channel, and have not arrived at the final secret key - for that we will need the choice of polarisation basis sent through the classical channel.)
+<br><br>
+
+#### [10 points] Pattern Recognition's handout
+
+Objective: Complete the `Pattern Recognition` handout. No cheating or copying with Charlie allowed.
 
 Point allocation scheme:
 * Based on the number of correct responses in the handout.
+<br><br>
 
 #### [10 points] Randomness handout
 > *Creativity is the ability to introduce order into the randomness of nature.*
 
 > *-  Charles Bennett and Gilles Brassard*
 
-Objective: Complete the `Randomness` handout. No cheating or copying with Bob allowed [insert stern warning].
+Objective: Complete the `Randomness` handout. No cheating or copying with Charlie allowed.
 
 Point allocation scheme:
 * Based on the number of correct responses in the handout.
+<br><br>
 
 #### [20 points] [Final Task] Eavesdrop the secret key
 > *No one, including me, can totally rule out data surveillance. That's why I write my text messages and emails so that they stand up to being read.*
