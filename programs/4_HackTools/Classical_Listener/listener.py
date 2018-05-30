@@ -24,6 +24,13 @@ timeout = 0.1        # Serial timeout (in s).
 # Opens the sender side serial port
 receiver = serial.Serial(serial_addr, baudrate, timeout=timeout)
 
+# Wait until the serial is ready
+# Note: for some computer models, particularly MacOS, the program cannot
+# talk to the serial directly after openin. Need to wait 1-2 second.
+print "Opening the serial port..."
+time.sleep(2)
+print "Done\n"
+
 print "IR Listener for Qcumbers"
 print "To exit the program, use Ctrl+C"
 print "Waiting for data ... "

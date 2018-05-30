@@ -143,6 +143,13 @@ timeout = 0.1        # Serial timeout (in s).
 deviceC = serial.Serial(serial_addrC, baudrate, timeout=timeout)
 deviceQ = serial.Serial(serial_addrQ, baudrate, timeout=timeout)
 
+# Wait until the serial is ready
+# Note: for some computer models, particularly MacOS, the program cannot
+# talk to the serial directly after openin. Need to wait 1-2 second.
+print "Opening the serial port..."
+time.sleep(2)
+print "Done\n"
+
 # Secure key string (binary)
 seckey_bin = ""
 n_attempt = 1

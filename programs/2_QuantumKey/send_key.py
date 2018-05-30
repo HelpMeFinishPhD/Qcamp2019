@@ -29,6 +29,13 @@ timeout = 0.1        # Serial timeout (in s).
 # Opens the sender side serial port
 sender = serial.Serial(serial_addr, baudrate, timeout=timeout)
 
+# Wait until the serial is ready
+# Note: for some computer models, particularly MacOS, the program cannot
+# talk to the serial directly after openin. Need to wait 1-2 second.
+print "Opening the serial port..."
+time.sleep(2)
+print "Done\n"
+
 # Starts the program
 print "Alice, Are you ready? This is the key sender program."
 print "Randomising key bits and basis bits using Arduino"
