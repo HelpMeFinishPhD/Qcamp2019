@@ -268,7 +268,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 			noiseY = find_noise(y)
 
 			noTally = np.logical_xor(x>noise,y>noise)
-			self.signal_plot.plot((noTally))
+			#self.signal_plot.plot((noTally))
 
 			for i in np.where(noTally):
 				x[i] = noiseX
