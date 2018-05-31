@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 """
-Created on May 2018
+Created a day before Qcamp2018
+Some parts were inspired from pulse fitting.
 
-Clustering algorithm to determine the hacked key
-@author: Qcumber2018
+@author: Qcumber 2018
+
+GUI for clustering algorithm for `Q'KD hacking
 """
 
 import sys
@@ -49,7 +51,7 @@ def apply_mask_16(unkey_bin,matchbs_bin):
 	    elif matchbs_bin[i] == '1':
 	        siftmask_bin += unkey_bin[i]
 	#print "\nMatched key bits:",\
-	    siftmask_bin[:4], siftmask_bin[4:8], siftmask_bin[8:12], siftmask_bin[12:16]
+	#    siftmask_bin[:4], siftmask_bin[4:8], siftmask_bin[8:12], siftmask_bin[12:16]
 	# Remove all the X'es
 	siftkey_bin = ''
 	siftkey_len = 0
@@ -178,7 +180,7 @@ def remove_header(signals,numConstant=3):
 	# Finds non-zero signal regions
 	starts = np.where(ds>0)[0]
 	stops = np.where(ds<0)[0]
-	# signal_plot.plot(starts)
+
 	# Finds header regions
 	header_starts=starts[stops-starts>numConstant]+1
 	header_stops=stops[stops-starts>numConstant]
@@ -228,25 +230,15 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		np.set_printoptions(precision=2)
 
 		# Initialise plots
+		self.signal_plot.addLegend()
 		self.signal_plot.plotItem.getAxis('left').setPen((0,0,0))
 		self.signal_plot.plotItem.getAxis('bottom').setPen((0,0,0))
 		labelStyle = {'font': 'Arial', 'font-size': '16px'}
 		self.signal_plot.setLabel('left', 'Signals', 'V',**labelStyle)
 		self.signal_plot.setLabel('bottom', 'Time', 'a.u.',**labelStyle)
 
-		# self.signal_plot_2.plotItem.getAxis('left').setPen((0,0,0))
-		# self.signal_plot_2.plotItem.getAxis('bottom').setPen((0,0,0))
-		# labelStyle = {'font': 'Arial', 'font-size': '16px'}
-		# self.signal_plot_2.setLabel('left', 'Signal2', 'V',**labelStyle)
-		# self.signal_plot_2.setLabel('bottom', 'Time', 'a.u.',**labelStyle)
-
-		# self.histo_plot.plotItem.getAxis('left').setPen((0,0,0))
-		# self.histo_plot.plotItem.getAxis('bottom').setPen((0,0,0))
 		self.histo_plot.setLabel('left', 'Signal2', 'V', **labelStyle)
 		self.histo_plot.setLabel('bottom', 'Signal1', 'V',**labelStyle)
-		# self.histo_plot.setTickSpacing(minor=0.1)
-
-
 
 
 	###########
@@ -262,8 +254,8 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		self.file = str(self.fileBox.currentText())
 		self.signals = np.loadtxt(self.file)
 		self.dev1, self.dev2 = self.signals[:,0], self.signals[:,1]
-		self.signal_plot.plot(self.dev1,symbol='o',symbolPen='g',pen='g')
-		self.signal_plot.plot(self.dev2,symbol='o',symbolPen='y',pen='y')
+		self.signal_plot.plot(self.dev1,symbol='o',symbolPen='g',pen='g', symbolSize=5)
+		self.signal_plot.plot(self.dev2,symbol='o',symbolPen='y',pen='y', symbolSize=5)
 		# Remove points that don't tally
 		def tally(x,y,noise=self.noise):
 			"""
@@ -289,10 +281,13 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		# KMeans
 		self.labels2D, self.classes, self.voltageClasses2D, self.voltageSpreads2D = kclassify2D(self.dev1,self.dev2,numClasses=5)
 
+		# Reformat integer classes to alphabets to reduce confusion
+		self.alphabeticalClasses = [list(string.ascii_uppercase)[Class] for Class in self.classes]
+
 		# Signal Plot
-		self.signal_plot.plot(self.dev1,symbol='o',symbolPen='r',pen='r')
-		self.signal_plot.plot(self.dev2,symbol='o',symbolPen='b',pen='b')
-		self.signal_plot.plot(self.labels2D)
+		self.signal_plot.plot(self.dev1,symbol='o',symbolPen='r',pen='r',symbolBrush='r',name='Sig 1', symbolSize=5)
+		self.signal_plot.plot(self.dev2,symbol='o',symbolPen='b',pen='b',symbolBrush='b',name='Sig 2', symbolSize=5)
+		# self.signal_plot.plot(self.labels2D)
 
 		# 2D scatter Plot
 		colors=['r', 'g', 'b', 'c', 'm', 'y', 'w']
@@ -302,12 +297,19 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 			pen=None,
 			symbol='o') for Class in self.classes]
 
+		# 2D scatter Plot: add centers and labels
+		# self.histo_plot.plot(center, symbol='o', pen=None, name=Class)
+		# self.histo_plot.plot(center[0][0], center[0][1], symbol='x', pen=None, symbolBrush=pg.mkBrush(colors[Class]), name=list(string.ascii_uppercase)[Class])
+		# print [(center[0], center[1]) for center, Class in zip(self.voltageClasses2D, self.classes)]
+		for center, Class in zip(self.voltageClasses2D, self.classes):
+			#print (center[0], center[1])
+			text = pg.TextItem(list(string.ascii_uppercase)[Class],color=(0,0,0))
+			text.setPos(center[0], center[1])
+			self.histo_plot.addItem(text)
+
 		# Set Display Options
 		np.set_printoptions(precision=2)
 		# print(tabulate(zip(self.classes, self.voltageClasses2D, self.voltageSpreads2D)))
-
-		# Reformat integer classes to alphabets to reduce confusion
-		self.alphabeticalClasses = [list(string.ascii_uppercase)[Class] for Class in self.classes]
 
 		classificationTable = tabulate(
 			zip(self.alphabeticalClasses,
@@ -324,41 +326,6 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		"""
 		Decode signal according to user's guess of which voltage is being assigned to which polarisation.
 		"""
-
-		# def raw_from_manual():
-		# 	"""
-		# 	Use user-assigned voltage classes to classify signal heights & assign polarisation
-		# 	Returns the assigned polarisation list as the list rawKey
-		# 	"""
-		# 	try:
-		# 		# Get voltage assignment to polarisation
-		# 		v0 = float(self.lineEdit_0.text())
-		# 		v1 = float(self.lineEdit_1.text())
-		# 		v2 = float(self.lineEdit_2.text())
-		# 		v3 = float(self.lineEdit_3.text())
-		# 	except:
-		# 		print('cannot convert voltage input to float!')
-
-		# 	manualVoltageClasses = [0,v0,v1,v2,v3]
-
-		# 	# Classify each signal according to which class it is closest to
-		# 	# Returns one of the integer labels [0, 1, 2, 3, 4] corresponding [0,..,v3]
-		# 	manualLabels = [manualClassify(signal,manualVoltageClasses) for signal in self.signals]
-
-		# 	# Removes headers
-		# 	manualLabels = remove_header(manualLabels)
-		# 	# self.signal_plot.plot(manualLabels,color='blue')
-
-		# 	# Remove duplicate entries: only unique entries carry information
-		# 	manualLabels = remove_adjacent_duplicates(manualLabels)
-
-		# 	# Remove noise floor
-		# 	manualLabels = manualLabels[manualLabels!=0]
-
-		# 	# Henceforth rawKey refers to POLARISATION ENCODED KEY (unsifted through basis mask)
-		# 	# Downshift labels so exclude noise label
-		# 	rawKey = manualLabels-1
-		# 	return rawKey
 
 		def raw_from_ai():
 			"""
