@@ -2,10 +2,8 @@
 """
 Created on May 2018
 
-Modified from the QITlab program
-@author: Adrian Utama
-
-Powermeter for Arduino Analogread (PyQt) Version 1.01
+Clustering algorithm to determine the hacked key
+@author: Qcumber2018
 """
 
 import sys
