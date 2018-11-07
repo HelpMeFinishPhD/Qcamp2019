@@ -35,7 +35,7 @@ Guidelines on how to form a team:
 
 Objective: Construct two circuits, one capable of sending IR signals, and one capable of receiving IR signals. This means, you need to emulate both Alice and Bob. You might also want to split the team into 2, taking on the roles of the `sender / Alice` and the `receiver / Bob`. The objective is accomplished when both sender and receiver circuits are built and working properly.
 
-Upon the completion of this task, you **will receive** another copy of sender and receiver ciruit. Why? Because we are nice `GameMasters` and don't want you to repeat the same boring task :)
+Upon the completion of this task, you **might receive** another copy of sender and receiver ciruit. Why? Because the `GameMasters`might be nice and lend you another copy of the circuit :)
 
 **Very important notes**: Read the safety precautions in Section 1.2.1 of the technical documents. This is *extremely important*, as you will get tested about this at the end of the session (not joking, we'll definitely test you!).
 
