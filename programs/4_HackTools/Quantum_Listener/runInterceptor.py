@@ -12,6 +12,7 @@ import sys
 import glob
 import time
 import string
+import matplotlib.pyplot as plt
 
 from PyQt4 import QtGui, uic
 from PyQt4.QtCore import QTimer
@@ -181,6 +182,12 @@ def remove_header(signals,numConstant=3):
 	starts = np.where(ds>0)[0]
 	stops = np.where(ds<0)[0]
 
+
+	print(starts, '\n', stops)
+
+	# plt.figure()
+	# plt.scatter(starts,stops)
+	# plt.show()
 	# Finds header regions
 	header_starts=starts[stops-starts>numConstant]+1
 	header_stops=stops[stops-starts>numConstant]
@@ -208,7 +215,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		# self.initialiseParameters()
 
 		# initial params
-		self.noise = 0.02
+		self.noise = 0.0025
 		self.header_removed = False
 		self.duplicates_removed = False
 		self.noise_removed = False
@@ -221,8 +228,8 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 		self.buttonDecode.clicked.connect(self.buttonDecode_clicked)
 		self.lineMask.textChanged.connect(self.lineMask_textChanged)
 		self.buttonApplyMask.clicked.connect(self.buttonApplyMask_clicked)
+		self.fileBox.view().pressed.connect(self.fileBox_clicked)
 
-		# Gets a list of avaliable serial ports to connect to and adds to combo box
 		self.files = glob.glob('key_logger/*.dat')
 		self.fileBox.addItems(np.sort(self.files))
 
@@ -244,6 +251,10 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 	###########
 	# BUTTONS #
 	###########
+	def fileBox_clicked(self):
+		# Gets a list of avaliable serial ports to connect to and adds to combo box
+		pass
+
 	def buttonStart_clicked(self):
 
 		# Clear plots
@@ -268,7 +279,7 @@ class MyWindowClass(QtGui.QMainWindow, form_class):
 			noiseY = find_noise(y)
 
 			noTally = np.logical_xor(x>noise,y>noise)
-			self.signal_plot.plot((noTally))
+			#self.signal_plot.plot((noTally))
 
 			for i in np.where(noTally):
 				x[i] = noiseX
@@ -407,3 +418,4 @@ if __name__ == '__main__':
 	myWindow = MyWindowClass(None)
 	myWindow.show()
 	sys.exit(app.exec_())
+
