@@ -1,3 +1,4 @@
+ariana@Ariana ~/D/S/P/Y/Q/Q/p/3_QKDComm> cat send_32bitQKD.py 
 #!/usr/bin/env python2
 
 '''
@@ -9,7 +10,6 @@ Author: Qcumber 2018
 import serial
 import sys
 import time
-import numpy as np
 
 # Parameter
 rep_wait_time = 0.3  # Wait time between IR packets (in s).
@@ -17,39 +17,37 @@ wait_till_sync = 1   # Time to wait for Bob (until we are sure he is ready).
 
 ''' Helper functions '''
 
-# Function to convert to hex, with a predefined nbits
-def tohex(val, nbits):
-    return hex((val + (1 << nbits)) % (1 << nbits))
 
 def send4BytesC(message_str):
     if len(message_str) == 4:
-        deviceC.write('SEND ') # Send identifier [BEL]x3 + A
-        deviceC.write(b'\x07\x07\x07' + 'A') # This is Alice (sender)
+        deviceC.write('SEND ')  # Send identifier [BEL]x3 + A
+        deviceC.write(b'\x07\x07\x07' + 'A')  # This is Alice (sender)
         time.sleep(rep_wait_time)
-        deviceC.write('SEND ') # Send message
+        deviceC.write('SEND ')  # Send message
         deviceC.write(message_str)
         print message_str
     else:
         print "The message is not 4 bytes. Please check again"
 
+
 def recv4BytesC():
-    deviceC.reset_input_buffer() # Flush all the garbages
-    deviceC.write('RECV ') # Flag to recv (the header)
-    state = 0   # 0: waiting for STX, 1: transmitting/ wait for ETX
-    while True: # Block until receives a reply
+    deviceC.reset_input_buffer()  # Flush all the garbages
+    deviceC.write('RECV ')  # Flag to recv (the header)
+    state = 0  # 0: waiting for STX, 1: transmitting/ wait for ETX
+    while True:  # Block until receives a reply
         if deviceC.in_waiting:
             hex_string = deviceC.read(8)
             if hex_string == '7070742':  # 07-[BEL], 42-B (Header from Bob)
-                # print ("Received message!") # Debug
-                deviceC.write('RECV ')   # Receive the message
+                # print ("Received message!")  # Debug
+                deviceC.write('RECV ')  # Receive the message
                 state = 1
             elif state == 1:
                 break
-    # Convert to ASCII string
-    hex_list = map(''.join, zip(*[iter(hex_string)]*2))
-    ascii_string = "".join([chr(int("0x"+each_hex,0)) for each_hex in hex_list])
+    # Converting from hex to ASCII in 2.7
+    ascii_string = ('0'*(len(hex_string) % 2) + hex_string).decode('hex')
     print ascii_string
     return ascii_string
+
 
 def sendKeyQ():
     print "Generating random polarisation sequence..."
@@ -58,14 +56,14 @@ def sendKeyQ():
     # Block until receive reply
     while True:
         if deviceQ.in_waiting:
-            print deviceQ.readlines()[0][:-1] # Should display OK
+            print deviceQ.readlines()[0][:-1]  # Should display OK
             break
     # Find out what is the key
     deviceQ.write('SEQ? ')
     # Block until receive 1st reply
     while True:
         if deviceQ.in_waiting:
-            reply_str = deviceQ.readlines()[0][:-1] # Remove the /n
+            reply_str = deviceQ.readlines()[0][:-1]  # Remove the /n
             break
     # Obtain the binary string repr for val and bas bits
     val_str = ""
@@ -79,33 +77,32 @@ def sendKeyQ():
     # Block until receive reply
     while True:
         if deviceQ.in_waiting:
-            print deviceQ.readlines()[0][:-1] # Should display OK
+            print deviceQ.readlines()[0][:-1]  # Should display OK
             break
     # Return the value and basis binary strings
     print val_str, bas_str
     return val_str, bas_str
+
 
 def keySiftAliceC(valA_str, basA_str):
     # Send ready confirmation to Alice
     send4BytesC("RDY!")
     print "Let's do it! Performing key sifting with Bob..."
     # Zeroth step: convert the bin string repr to 32 bit int
-    valA_int = int("0b"+valA_str, 0)
-    basA_int = int("0b"+basA_str, 0)
+    valA_int = int(valA_str, 2)
+    basA_int = int(basA_str, 2)
     # First step: Listens to Bob's basis
     basB_hex = recv4BytesC()   # in hex
-    basB_int = int("0x"+basB_hex, 0)
+    basB_int = int(basB_hex, 16)
     # Second step: Compare Alice and Bob's basis
-    matchbs_int = ~ (basA_int ^ basB_int) # Perform matching operation
+    matchbs_int = 0xffff ^ (basA_int ^ basB_int)  # Perform matching operation, 0xffff^ is basically a not gate
     # Third step: Send this matched basis back to Bob
-    matchbs_hex = tohex(matchbs_int, 16) # Get the hex from int
-    matchbs_int = int(matchbs_hex, 0) # Need to convert again from hex
-    send4BytesC(matchbs_hex[2:].zfill(4)) # Sends this hex to Bob
+    send4BytesC(hex(matchbs_int)[2:].zfill(4))  # Sends this hex to Bob
     # Fourth step: Perform key sifting (in binary string)
-    matchbs_str = np.binary_repr(matchbs_int, width=16)
+    matchbs_str = bin(matchbs_int)[2:].zfill(16)
     siftmask_str = ''
-    for i in range(16): # 16 bits
-        if matchbs_str[i] == '0' :
+    for i in range(16):  # 16 bits
+        if matchbs_str[i] == '0':
             siftmask_str += 'X'
         elif matchbs_str[i] == '1':
             siftmask_str += valA_str[i]
@@ -171,30 +168,28 @@ try:
     # Performing key distribution
     while True:
         print "\nAttempt", n_attempt
-        time.sleep(wait_till_sync) # Wait until Bob is ready to receive key
+        time.sleep(wait_till_sync)  # Wait until Bob is ready to receive key
         val_str, bas_str = sendKeyQ()
-        time.sleep(wait_till_sync) # Wait until Bob is ready to perform QKD
+        time.sleep(wait_till_sync)  # Wait until Bob is ready to perform QKD
         key = keySiftAliceC(val_str, bas_str)
         seckey_bin = seckey_bin + key
-        if len(seckey_bin) >= 32: # If the key is longer than 32 bits, stop operation
+        if len(seckey_bin) >= 32:  # If the key is longer than 32 bits, stop operation
             break
         else:
             print "Done! You've got", len(key), "bits. Total length:", len(seckey_bin), "bits."
-            n_attempt +=1
+            n_attempt += 1
 
     print "DONE. The task is completed."
 
     # You've got the key!
-    seckey_bin = seckey_bin[:32] # Trim to 32 bits
-    seckey_hex = tohex(int("0b"+seckey_bin, 0), 32)
-    # Some intrepreter introduces L at the end (which probably means long). Will remove them (cosmetic reason)
-    if seckey_hex[-1] == "L":
-        seckey_hex = seckey_hex[:-1]
-    print "The 32 bit secret key is (in hex):", seckey_hex[2:].zfill(8)
+    seckey_bin = seckey_bin[:32]  # Trim to 32 bits
+    seckey_hex = hex(int(seckey_bin, 2))[2:].zfill(8)
+    # L would only appear if it would fit into a c signed long long int
+    print "The 32 bit secret key is (in hex):", seckey_hex
     print "\n Congrats. Use the key wisely. Thank you!"
 
 except KeyboardInterrupt:
     # End of program
-    deviceC.write('#') # Flag to force end listening
+    deviceC.write('#')  # Flag to force end listening
     print ("\nProgram interrupted. Thank you for using the program!")
     sys.exit()  # Exits the program
