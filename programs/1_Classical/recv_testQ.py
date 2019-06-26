@@ -4,6 +4,7 @@
 Python wrapper program to receive a string through the IR channel with
 the NEC-string protocol.
 Author: Qcumber 2018
+edited on 19 June 2019
 '''
 
 import serial
@@ -11,7 +12,7 @@ import sys
 import time
 
 # Text to send and verify
-text = "Qc!8" # Maximum of 4 bytes / 4 characters
+text = "Qc!9" # Maximum of 4 bytes / 4 characters
 
 # Obtain device location
 devloc_file = '../devloc_classical.txt'
