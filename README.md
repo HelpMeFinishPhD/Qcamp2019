@@ -6,7 +6,7 @@ Slightly modified from Qcamp2018 repo.
 This repo consists of programs, missions, and handouts for Qcamp 2019 experimental session.
 http://qcamp.quantumlah.org/
 
-One can read more about this project at [arxiv link] (soon, I promise).
+One can read more about this project at https://arxiv.org/abs/1911.02565
 
 In short, this session consists of gamified do-it-yourself experiments, designed to convey the ideas and steps of a Quantum Key Distribution implementation and also include a remark about potential security issues. Note also that this is not a QKD implementation, even though they share a lot of properties and similarities.
 
