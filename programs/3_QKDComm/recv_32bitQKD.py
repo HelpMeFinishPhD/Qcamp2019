@@ -9,7 +9,6 @@ Author: Qcumber 2018
 import serial
 import sys
 import time
-import numpy as np
 
 # Parameter
 rep_wait_time = 0.3  # Wait time between packets (in s).
@@ -66,9 +65,8 @@ def recv4BytesC():
                 state = 1
             elif state == 1:
                 break
-    # Convert to ASCII string
-    hex_list = map(''.join, zip(*[iter(hex_string)]*2))
-    ascii_string = "".join([chr(int("0x"+each_hex,0)) for each_hex in hex_list])
+    # Convert to ASCII string in python 2.7
+    ascii_string = ('0'*(len(hex_string) % 2) + hex_string).decode('hex') 
     print ascii_string
     return ascii_string
 
@@ -113,16 +111,16 @@ def keySiftBobC(resB_str, basB_str):
     recv4BytesC()
     print "Alice is ready! Performing key sifting with Alice..."
     # Zeroth step: convert the bin string repr to 32 bit int
-    resB_int = int("0b"+resB_str, 0)
-    basB_int = int("0b"+basB_str, 0)
+    resB_int = int(resB_str, 2)
+    basB_int = int(basB_str, 2)
     # First step: send the basis choice to Alice
-    basB_hex = tohex(basB_int, 16) # Get the hex from int
-    send4BytesC(basB_hex[2:].zfill(4)) # Sends this hex to Bob
+    basB_hex = hex(basB_int)[2:].zfill(4) # Get the hex from int
+    send4BytesC(basB_hex) # Sends this hex to Bob
     # Second step: Wait for her reply...
     matchbs_hex = recv4BytesC()   # in hex
-    matchbs_int = int("0x"+matchbs_hex, 0)
+    matchbs_int = int(matchbs_hex, 16)
     # Fourth step: Perform key sifting (in binary string)
-    matchbs_str = np.binary_repr(matchbs_int, width=16)
+    matchbs_str = bin(matchbs_int)[2:].zfill(16)
     siftmask_str = ''
     for i in range(16): # 16 bits
         if matchbs_str[i] == '0' :
@@ -189,11 +187,9 @@ try:
 
     # You've got the key!
     seckey_bin = seckey_bin[:32] # Trim to 32 bits
-    seckey_hex = tohex(int("0b"+seckey_bin, 0), 32)
-    # Some intrepreter introduces L at the end (which probably means long). Will remove them (cosmetic reason)
-    if seckey_hex[-1] == "L":
-        seckey_hex = seckey_hex[:-1]
-    print "The 32 bit secret key is (in hex):", seckey_hex[2:].zfill(8)
+    seckey_hex = hex(int(seckey_bin, 2))[2:].zfill(8)
+    # L would only appear if it would fit into a c signed long long int'
+    print "The 32 bit secret key is (in hex):", seckey_hex
     print "\n Congrats. Use the key wisely. Thank you!"
 
 except KeyboardInterrupt:
