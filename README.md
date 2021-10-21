@@ -1,3 +1,5 @@
+This repo is no longer maintained by me. See line 11 :)
+
 # Qcamp 2019
 Slightly modified from Qcamp2018 repo. 
 
